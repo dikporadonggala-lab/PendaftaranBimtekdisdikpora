@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SIM-BIMTEK | Disdikpora Kabupaten Donggala</title>
+
+  <!-- PWA Manifest Data URI -->
+  <link rel="manifest" href="data:application/manifest+json;utf8,%7B%22name%22%3A%22SIM-BIMTEK%20Disdikpora%20Donggala%22%2C%22short_name%22%3A%22SIM-BIMTEK%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F8F9FC%22%2C%22theme_color%22%3A%22%231B1446%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fe%2Fe5%2FLambang_Kabupaten_Donggala.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D" />
+  <meta name="theme-color" content="#1B1446" />
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Times New Roman"', 'Times', 'serif']
+          },
+          colors: {
+            atrium: {
+              sidebarTop: '#1B1446',
+              sidebarBottom: '#130E33',
+              canvas: '#F8F9FC',
+              violet: '#6D4AFF',
+              violetHover: '#5835EE',
+              softViolet: '#C4B5FD'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Full Page Reset untuk menutup elemen bawaan Blogger/Host */
+    #app-wrapper {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background-color: #F8F9FC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Aurora Mesh Banner sesuai Atrium UI */
+    .aurora-banner {
+      background: radial-gradient(circle at 80% 90%, rgba(253, 224, 141, 0.55) 0%, transparent 45%),
+                  radial-gradient(circle at 92% 25%, rgba(244, 162, 184, 0.75) 0%, transparent 50%),
+                  linear-gradient(125deg, #19113D 0%, #3E2496 42%, #7D4DFF 78%, #EAA4C8 100%);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.11);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .bento-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 2px 10px -3px rgba(6, 81, 237, 0.05);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    /* Signature Pad Touch Action */
+    #sig-canvas, #edit-sig-canvas {
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    /* Area Cetak Khusus Formulir Biodata Disdikpora */
+    #print-area { display: none; }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 14mm 12mm 14mm;
+      }
+      body * {
+        visibility: hidden;
+      }
+      #app-wrapper {
+        display: none !important;
+      }
+      #print-area, #print-area * {
+        visibility: visible;
+      }
+      #print-area {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        font-family: 'Times New Roman', Times, serif !important;
+      }
+      .page-break-sheet {
+        page-break-after: always;
+        break-after: page;
+        padding-bottom: 10px;
+      }
+      .page-break-sheet:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FC] text-gray-900 antialiased selection:bg-violet-600 selection:text-white">
+
+<!-- AREA CETAK FORMULIR BIODATA (PERSIS FILE EXCEL DISDIKPORA DONGGALA) -->
+<div id="print-area"></div>
+
+<!-- WRAPPER UTAMA APLIKASI -->
+<div id="app-wrapper">
+
+  <!-- BANNER MODE PREVIEW (OTOMATIS HILANG 100% SAAT IS_PREVIEW = false) -->
+  <div id="preview-banner" class="hidden bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white px-4 py-1.5 text-xs font-medium flex flex-wrap items-center justify-between gap-2 z-50 shrink-0 shadow-sm">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-black/25 uppercase tracking-wider">
+        <i data-lucide="sparkles" class="w-3 h-3 mr-1"></i> Mode Preview Aktif
+      </span>
+      <span class="hidden sm:inline">Data disimpan di memori browser sementara. Ubah <code>IS_PREVIEW = false</code> saat deploy ke produksi.</span>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <span class="text-[11px] opacity-90 mr-1">Quick Login:</span>
+      <button onclick="window.app.quickLoginAdmin()" class="px-2.5 py-0.5 rounded-md bg-white text-gray-900 font-semibold hover:bg-gray-100 transition text-[11px] shadow-sm">
+        Masuk Admin
+      </button>
+      <button onclick="window.app.quickLoginPeserta()" class="px-2.5 py-0.5 rounded-md bg-indigo-950/80 text-white font-semibold hover:bg-indigo-950 transition text-[11px] border border-white/20">
+        Masuk Peserta Contoh
+      </button>
+      <button onclick="window.app.logoutAll()" class="px-2 py-0.5 rounded-md bg-black/20 hover:bg-black/30 text-white transition text-[11px]">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- LAYOUT UTAMA: SIDEBAR KIRI (DESKTOP) + KANVAS UTAMA (KANAN) -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- FIXED LEFT SIDEBAR (DEEP INDIGO ATRIUM STYLE - DESKTOP) -->
+    <aside class="hidden lg:flex flex-col w-64 bg-gradient-to-b from-[#1B1446] to-[#130E33] text-white shrink-0 select-none border-r border-indigo-950/60">
+      <!-- Top Brand Card -->
+      <div class="p-4">
+        <div class="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-400 to-fuchsia-500 p-1.5 flex items-center justify-center shrink-0 shadow-inner">
+            <img id="sidebar-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Lambang_Kabupaten_Donggala.png" alt="Logo" class="w-full h-full object-contain drop-shadow" onerror="this.src='https://via.placeholder.com/40?text=DG'" />
+          </div>
+          <div class="min-w-0 flex-1">
+            <h1 class="text-sm font-bold tracking-tight text-white truncate">SIM-BIMTEK</h1>
+            <p class="text-[11px] text-indigo-200/75 truncate">Disdikpora Kab. Donggala</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 px-3 space-y-5 overflow-y-auto py-2" id="desktop-nav">
+        <!-- Di-render secara dinamis berdasarkan role (Publik/Peserta/Admin) -->
+      </nav>
+
+      <!-- Bottom Status & Active Profile Dock -->
+      <div class="p-3.5 mt-auto">
+        <div class="p-3 rounded-2xl bg-[#231B54]/90 border border-white/10 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="sidebar-status-text" class="text-[11px] font-semibold text-indigo-100">Sistem Online</span>
+            </div>
+            <span id="sidebar-role-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/30 text-violet-200 border border-violet-400/30">Publik</span>
+          </div>
+          <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div id="sidebar-user-avatar" class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
+                G
+              </div>
+              <div class="min-w-0">
+                <p id="sidebar-user-name" class="text-xs font-semibold text-white truncate">Tamu / Calon Peserta</p>
+                <p id="sidebar-user-sub" class="text-[10px] text-indigo-200/70 truncate">Silakan daftar / login</p>
+              </div>
+            </div>
+            <button id="sidebar-logout-btn" onclick="window.app.logoutAll()" class="hidden p-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-200 transition" title="Keluar / Logout">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA (CLEAN LIGHT CANVAS #F8F9FC) -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-[#F8F9FC]">
+
+      <!-- TOP HEADER BAR -->
+      <header class="h-16 px-4 sm:px-7 bg-[#F8F9FC]/90 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between gap-4 shrink-0 z-20">
+        <div>
+          <p id="header-date-label" class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-gray-400">SELASA, 3 NOVEMBER 2026</p>
+          <h2 id="header-greeting" class="text-base sm:text-xl font-bold tracking-tight text-gray-900 truncate">Portal Pendaftaran Bimtek & Seminar</h2>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <!-- Pill Search / Quick Filter -->
+          <div class="hidden md:flex items-center bg-white border border-slate-200/90 rounded-full px-3.5 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-violet-500/30 focus-within:border-violet-500 transition">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 mr-2"></i>
+            <input id="global-search-input" type="text" oninput="window.app.handleGlobalSearch(this.value)" placeholder="Cari peserta / sekolah / NIP..." class="text-xs bg-transparent focus:outline-none text-gray-700 w-48 lg:w-56" />
+            <span class="text-[10px] font-semibold text-gray-400 bg-slate-100 px-1.5 py-0.5 rounded ml-1">⌘K</span>
+          </div>
+
+          <!-- Tombol Cepat WA Panitia di Header -->
+          <button onclick="window.app.openWhatsAppPanitia()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold transition shadow-sm">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 fill-emerald-600 text-emerald-600"></i>
+            <span class="hidden sm:inline" id="header-wa-label">WA Panitia</span>
+          </button>
+
+          <!-- Tombol Akses Login / Cetak -->
+          <button id="header-auth-btn" onclick="window.app.navigate('login')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-semibold transition shadow-sm">
+            <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+            <span>Login / Cek Biodata</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE BENTO WORKSPACE -->
+      <div id="workspace-scroll" class="flex-1 overflow-y-auto px-4 sm:px-7 py-5 pb-24 lg:pb-8 space-y-6">
+
+        <!-- HERO BANNER AURORA GLASSMORPHISM (TAMPIL KONTEKSTUAL) -->
+        <section id="hero-aurora-section" class="aurora-banner rounded-2xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden">
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-5 border-b border-white/15">
+            <div class="space-y-1.5 max-w-3xl">
+              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md text-[11px] font-semibold tracking-wide uppercase">
+                <span class="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+                <span id="banner-instansi-title">DINAS PENDIDIKAN, PEMUDA DAN OLAHRAGA KAB. DONGGALA</span>
+              </div>
+              <h3 id="banner-kegiatan-nama" class="text-lg sm:text-2xl font-extrabold tracking-tight leading-snug">
+                BIMTEK PENDIDIK BAGI PESERTA DIDIK YANG BERKEBUTUHAN KHUSUS (INKLUSIF)
+              </h3>
+              <p id="banner-kegiatan-tema" class="text-xs sm:text-sm text-indigo-100/95 font-medium">
+                Tema: Penguatan Kompetensi Guru Sekolah Dasar dalam Layanan Pendidikan Inklusif yang Ramah Anak
+              </p>
+            </div>
+
+            <!-- Kegiatan Selector Dropdown (Jika ada > 1 kegiatan) -->
+            <div class="shrink-0 bg-black/25 backdrop-blur-md p-2.5 rounded-xl border border-white/15 min-w-[230px]">
+              <label class="block text-[10px] uppercase tracking-wider text-indigo-200 font-semibold mb-1">Pilih Kegiatan Aktif:</label>
+              <select id="active-kegiatan-select" onchange="window.app.selectActiveKegiatan(this.value)" class="w-full bg-white/15 text-white text-xs font-semibold rounded-lg px-2.5 py-2 border border-white/20 focus:outline-none">
+                <!-- Diisi dinamis -->
+              </select>
+            </div>
+          </div>
+
+          <!-- 3 Kartu Highlight Frosted Glass di dalam Banner -->
+          <div class="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-3 pt-4">
+            <!-- Card 1: Waktu & Tempat -->
+            <div class="glass-card rounded-xl p-3.5 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+                  <i data-lucide="calendar-clock" class="w-5 h-5 text-amber-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-[11px] text-indigo-100/80 font-medium">Waktu & Tempat Pelaksanaan</p>
+                  <p id="banner-waktu" class="text-xs font-bold text-white truncate">SENIN - RABU, 9 - 11 NOVEMBER 2026</p>
+                  <p id="banner-tempat" class="text-[11px] text-amber-200 truncate">RUANG KASIROMU KANTOR BUPATI DONGGALA</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Batas Akhir Pendaftaran (Countdown) -->
+            <div class="glass-card rounded-xl p-3.5 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+                  <i data-lucide="timer" class="w-5 h-5 text-rose-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-[11px] text-indigo-100/80 font-medium">Batas Akhir Pendaftaran</p>
+                  <p id="banner-deadline-text" class="text-xs font-bold text-white truncate">8 November 2026, 23:59 WITA</p>
+                  <span id="banner-countdown-badge" class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30 mt-0.5">
+                    • Pendaftaran Dibuka
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Statistik Cepat & Jadwal -->
+            <div class="glass-card rounded-xl p-3.5 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+                  <i data-lucide="users" class="w-5 h-5 text-emerald-300"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-[11px] text-indigo-100/80 font-medium">Peserta Terdaftar Saat Ini</p>
+                  <p class="text-sm font-extrabold text-white"><span id="banner-total-peserta">0</span> <span class="text-xs font-normal text-indigo-100">Peserta</span></p>
+                  <p id="banner-kode-dok" class="text-[10px] text-indigo-200 truncate">Formulir Biodata Resmi Disdikpora</p>
+                </div>
+              </div>
+              <button onclick="window.app.navigate('jadwal')" class="px-2.5 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-[11px] font-semibold text-white transition shrink-0 flex items-center gap-1">
+                <span>Jadwal</span>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW CONTAINER DINAMIS -->
+        <div id="dynamic-view-container"></div>
+
+      </div>
+    </main>
+
+    <!-- FLOATING BOTTOM NAVIGATION BAR (MOBILE ONLY < 1024px) -->
+    <nav id="mobile-bottom-nav" class="lg:hidden fixed bottom-0 inset-x-0 bg-[#1B1446]/95 backdrop-blur-xl text-white border-t border-white/10 px-2 py-1.5 flex items-center justify-around z-40 shadow-2xl">
+      <!-- Di-render dinamis -->
+    </nav>
+
+    <!-- FLOATING WHATSAPP PANITIA BUTTON -->
+    <button onclick="window.app.openWhatsAppPanitia()" class="fixed right-4 bottom-20 lg:bottom-6 z-40 group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white pl-3.5 pr-4 py-2.5 rounded-full shadow-xl border border-emerald-400/40 transition-all duration-200 hover:scale-105">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+      </span>
+      <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+      <span class="text-xs font-bold tracking-tight" id="floating-wa-text">Hubungi Panitia</span>
+    </button>
+
+  </div>
+
+  <!-- MODAL PREVIEW & CETAK BIODATA PESERTA -->
+  <div id="modal-biodata-preview" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="px-5 py-3.5 bg-[#1B1446] text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="printer" class="w-5 h-5 text-violet-300"></i>
+          <div>
+            <h4 class="text-sm font-bold">Pratinjau Cetak Formulir Biodata Peserta</h4>
+            <p class="text-[11px] text-indigo-200">Format standar BIODATA KEGIATAN INKLUSIF.xlsx (Siap Cetak A4 / Simpan PDF)</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.app.triggerPrintCurrentPreview()" class="px-3.5 py-1.5 rounded-lg bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold flex items-center gap-1.5 shadow">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>Cetak / Download PDF</span>
+          </button>
+          <button onclick="window.app.closePreviewModal()" class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+      <div id="modal-biodata-body" class="p-4 sm:p-8 overflow-y-auto bg-slate-100 flex-1 flex justify-center">
+        <!-- Pratinjau lembar A4 masuk di sini -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container" class="fixed top-14 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+</div>
+
+<!-- SCRIPT UTAMA APLIKASI (MODULE SUPABASE + HYBRID AUTH + FORM BUILDER + TOUCH SIGNATURE) -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // ============================================================================
+  // KONFIGURASI APLIKASI (SAKLAR DEPLOYMENT)
+  // ============================================================================
+  const IS_PREVIEW = false; // Ubah menjadi false SAAT DEPLOY agar mode preview & data dummy hilang dan terhubung 100% ke Supabase
+  const SUPABASE_URL = "https://wmrjwscrdsllydmiqcep.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indtcmp3c2NyZHNsbHlkbWlxY2VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMzgxNTQsImV4cCI6MjEwODYxNDE1NH0.xyrXXcM272fTkzFRQ2qHBPPSOOKO1PaakIqAuiw-ekw";
+
+  const supabase = (!IS_PREVIEW && SUPABASE_URL !== "URL_SUPABASE_ANDA")
+    ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
+
+  // ============================================================================
+  // DEFINISI 20 KOLOM STANDAR DARI FILE "BIODATA KEGIATAN INKLUSIF.xlsx"
+  // ============================================================================
+  const DEFAULT_20_COLUMNS = [
+    { id: 'col-1', kunci_kolom: 'nama', label_kolom: 'NAMA', tipe_input: 'text', opsi_pilihan: '', urutan: 1, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-2', kunci_kolom: 'nip', label_kolom: 'NIP', tipe_input: 'text', opsi_pilihan: '', urutan: 2, wajib_diisi: false, aktif: true, is_kunci_login: false },
+    { id: 'col-3', kunci_kolom: 'nik', label_kolom: 'NIK', tipe_input: 'text', opsi_pilihan: '', urutan: 3, wajib_diisi: true, aktif: true, is_kunci_login: true },
+    { id: 'col-4', kunci_kolom: 'pangkat_golongan', label_kolom: 'Pangkat/Golongan', tipe_input: 'select', opsi_pilihan: '-, Penata Muda (III/a), Penata Muda Tk.I (III/b), Penata (III/c), Penata Tk.I (III/d), Pembina (IV/a), Pembina Tk.I (IV/b), IX (PPPK), Non-ASN', urutan: 4, wajib_diisi: false, aktif: true, is_kunci_login: false },
+    { id: 'col-5', kunci_kolom: 'tempat_lahir', label_kolom: 'Tempat Lahir', tipe_input: 'text', opsi_pilihan: '', urutan: 5, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-6', kunci_kolom: 'tanggal_lahir', label_kolom: 'Tanggal Lahir', tipe_input: 'date', opsi_pilihan: '', urutan: 6, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-7', kunci_kolom: 'jenis_kelamin', label_kolom: 'Jenis Kelamin', tipe_input: 'select', opsi_pilihan: 'Laki-laki, Perempuan', urutan: 7, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-8', kunci_kolom: 'agama', label_kolom: 'Agama', tipe_input: 'select', opsi_pilihan: 'Islam, Kristen, Katolik, Hindu, Buddha, Konghucu', urutan: 8, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-9', kunci_kolom: 'pendidikan_terakhir', label_kolom: 'Pendidikan Terakhir', tipe_input: 'select', opsi_pilihan: 'SMA/SMK, D3, S1, S2, S3', urutan: 9, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-10', kunci_kolom: 'jurusan', label_kolom: 'Jurusan', tipe_input: 'text', opsi_pilihan: '', urutan: 10, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-11', kunci_kolom: 'alamat_rumah', label_kolom: 'Alamat Rumah', tipe_input: 'text', opsi_pilihan: '', urutan: 11, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-12', kunci_kolom: 'email', label_kolom: 'Alamat Email', tipe_input: 'text', opsi_pilihan: '', urutan: 12, wajib_diisi: false, aktif: true, is_kunci_login: false },
+    { id: 'col-13', kunci_kolom: 'npwp', label_kolom: 'NPWP', tipe_input: 'text', opsi_pilihan: '', urutan: 13, wajib_diisi: false, aktif: true, is_kunci_login: false },
+    { id: 'col-14', kunci_kolom: 'no_rekening_bpd', label_kolom: 'No. Rekening (BPD Sulteng)', tipe_input: 'text', opsi_pilihan: '', urutan: 14, wajib_diisi: false, aktif: true, is_kunci_login: false },
+    { id: 'col-15', kunci_kolom: 'no_hp', label_kolom: 'No. HP', tipe_input: 'text', opsi_pilihan: '', urutan: 15, wajib_diisi: true, aktif: true, is_kunci_login: true },
+    { id: 'col-16', kunci_kolom: 'jabatan', label_kolom: 'Jabatan', tipe_input: 'text', opsi_pilihan: '', urutan: 16, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-17', kunci_kolom: 'instansi_sekolah', label_kolom: 'Intansi / Sekolah', tipe_input: 'text', opsi_pilihan: '', urutan: 17, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-18', kunci_kolom: 'alamat_instansi', label_kolom: 'Alamat Instansi/Sekolah', tipe_input: 'text', opsi_pilihan: '', urutan: 18, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-19', kunci_kolom: 'kecamatan', label_kolom: 'Kecamatan', tipe_input: 'select', opsi_pilihan: 'Banawa, Banawa Tengah, Banawa Selatan, Rio Pakava, Pinembani, Tanantovea, Labuan, Sindue, Sindue Tombusabora, Sindue Tobata, Sirenja, Balaesang, Balaesang Tanjung, Dampelas, Sojol, Sojol Utara', urutan: 19, wajib_diisi: true, aktif: true, is_kunci_login: false },
+    { id: 'col-20', kunci_kolom: 'kabupaten_kota', label_kolom: 'Kabupaten/Kota', tipe_input: 'text', opsi_pilihan: '', urutan: 20, wajib_diisi: true, aktif: true, is_kunci_login: false }
+  ];
+
+  // ============================================================================
+  // STATE APLIKASI & DATA DUMMY MINIMALIS (HANYA UNTUK IS_PREVIEW = true)
+  // ============================================================================
+  const state = {
+    currentView: 'pendaftaran', // pendaftaran | jadwal | login | peserta_area | admin_dashboard | admin_kegiatan | admin_kolom | admin_peserta | admin_pengaturan
+    role: 'public', // public | peserta | admin
+    currentUser: null,
+    activeKegiatanId: null,
+    searchQuery: '',
+    filterKecamatan: 'ALL',
+    currentPreviewList: [],
+
+    pengaturan: {
+      id: 1,
+      pemerintah: 'PEMERINTAH KABUPATEN DONGGALA',
+      dinas: 'DINAS PENDIDIKAN, PEMUDA DAN OLAHRAGA',
+      alamat_dinas: 'Alamat : Jalan Pue Mami Telp. (0457) 71461 Fax 71462 Donggala',
+      logo_url: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Lambang_Kabupaten_Donggala.png',
+      aktifkan_upload_foto: true,
+      wajib_upload_foto: false,
+      no_wa_panitia: '6281234567890',
+      nama_kontak_wa: 'Panitia Bimtek SD Disdikpora',
+      pesan_default_wa: 'Halo Panitia Bimtek Disdikpora Kab. Donggala, saya ingin menanyakan informasi terkait pendaftaran kegiatan Bimtek.'
+    },
+
+    kegiatanList: [],
+    kolomList: [],
+    pesertaList: []
+  };
+
+  // Inisialisasi Data Dummy Minimalis (1 kegiatan & 2 peserta) HANYA saat IS_PREVIEW = true
+  function initPreviewDummyData() {
+    if (!IS_PREVIEW) return;
+
+    // Sample Tanda Tangan SVG Data URI untuk preview
+    const sampleSig = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80"><path d="M20,55 Q50,15 75,45 T130,35 T190,50" fill="none" stroke="#1e1b4b" stroke-width="3" stroke-linecap="round"/></svg>`);
+
+    state.kegiatanList = [
+      {
+        id: 'keg-preview-1',
+        nama_kegiatan: 'BIMTEK PENDIDIK BAGI PESERTA DIDIK YANG BERKEBUTUHAN KHUSUS (INKLUSIF)',
+        tema_kegiatan: 'Penguatan Kompetensi Guru Sekolah Dasar dalam Layanan Pendidikan Inklusif yang Ramah Anak di Kabupaten Donggala',
+        waktu_pelaksanaan: 'SENIN - RABU, 9 - 11 NOVEMBER 2026',
+        tempat_pelaksanaan: 'RUANG KASIROMU KANTOR BUPATI DONGGALA',
+        batas_pendaftaran: '2026-11-08T23:59',
+        titimangsa_ttd: 'Donggala, 9 November 2026',
+        kode_pos_dokumen: '94351',
+        revisi: '00',
+        tgl_terbit: '09-11-2026',
+        halaman: '1 dari 1',
+        status_aktif: true,
+        jadwal_kegiatan: [
+          { waktu: 'Hari 1 • 08.00 - 10.00 WITA', materi: 'Registrasi Peserta & Pembukaan Resmi Kegiatan Bimtek Inklusif', narasumber: 'Kepala Dinas Dikpora Kab. Donggala' },
+          { waktu: 'Hari 1 • 10.15 - 15.30 WITA', materi: 'Kebijakan Pendidikan Inklusif & Identifikasi Peserta Didik Berkebutuhan Khusus (PDBK)', narasumber: 'Tim Ahli Inklusif Provinsi / Balai Guru Penggerak' },
+          { waktu: 'Hari 2 • 08.00 - 16.00 WITA', materi: 'Penyusunan Kurikulum Akomodatif & Program Pembelajaran Individual (PPI)', narasumber: 'Narasumber Nasional Pendidikan Inklusif' },
+          { waktu: 'Hari 3 • 08.00 - 14.00 WITA', materi: 'Simulasi Praktik Baik, Rencana Tindak Lanjut (RTL) & Penutupan', narasumber: 'Bidang Pembinaan SD Disdikpora Donggala' }
+        ]
+      }
+    ];
+
+    state.activeKegiatanId = 'keg-preview-1';
+    state.kolomList = JSON.parse(JSON.stringify(DEFAULT_20_COLUMNS));
+
+    state.pesertaList = [
+      {
+        id: 'pes-preview-1',
+        kegiatan_id: 'keg-preview-1',
+        nama: 'SITTI RAHMAWATI, S.Pd., Gr.',
+        nip: '19880412 201903 2 008',
+        nik: '7203085204880001',
+        no_hp: '081341223344',
+        biodata_json: {
+          nama: 'SITTI RAHMAWATI, S.Pd., Gr.',
+          nip: '19880412 201903 2 008',
+          nik: '7203085204880001',
+          pangkat_golongan: 'Penata Muda Tk.I (III/b)',
+          tempat_lahir: 'Donggala',
+          tanggal_lahir: '1988-04-12',
+          jenis_kelamin: 'Perempuan',
+          agama: 'Islam',
+          pendidikan_terakhir: 'S1',
+          jurusan: 'Pendidikan Guru Sekolah Dasar (PGSD)',
+          alamat_rumah: 'Jl. Pelabuhan No. 24 Kel. Boya, Kec. Banawa',
+          email: 'sitti.rahmawati88@guru.sd.belajar.id',
+          npwp: '89.234.112.4-831.000',
+          no_rekening_bpd: '1020201045678',
+          no_hp: '081341223344',
+          jabatan: 'Guru Kelas / Koordinator Inklusif',
+          instansi_sekolah: 'SDN 1 BANAWA',
+          alamat_instansi: 'Jl. Kemakmuran No. 12 Kec. Banawa',
+          kecamatan: 'Banawa',
+          kabupaten_kota: 'Donggala'
+        },
+        foto_base64: '',
+        ttd_base64: sampleSig,
+        created_at: '2026-11-03T08:30:00Z'
+      },
+      {
+        id: 'pes-preview-2',
+        kegiatan_id: 'keg-preview-1',
+        nama: 'MOHAMMAD RIZAL, S.Pd.',
+        nip: '19910819 202221 1 004',
+        nik: '7203121908910002',
+        no_hp: '085241998877',
+        biodata_json: {
+          nama: 'MOHAMMAD RIZAL, S.Pd.',
+          nip: '19910819 202221 1 004',
+          nik: '7203121908910002',
+          pangkat_golongan: 'IX (PPPK)',
+          tempat_lahir: 'Toaya',
+          tanggal_lahir: '1991-08-19',
+          jenis_kelamin: 'Laki-laki',
+          agama: 'Islam',
+          pendidikan_terakhir: 'S1',
+          jurusan: 'Pendidikan Luar Biasa / PGSD',
+          alamat_rumah: 'Desa Toaya Kec. Sindue',
+          email: 'm.rizal91@guru.sd.belajar.id',
+          npwp: '91.445.881.2-831.000',
+          no_rekening_bpd: '1020201099123',
+          no_hp: '085241998877',
+          jabatan: 'Guru Pendamping Khusus (GPK)',
+          instansi_sekolah: 'SDN 2 SINDUE',
+          alamat_instansi: 'Jl. Trans Sulawesi Desa Toaya Kec. Sindue',
+          kecamatan: 'Sindue',
+          kabupaten_kota: 'Donggala'
+        },
+        foto_base64: '',
+        ttd_base64: sampleSig,
+        created_at: '2026-11-03T09:15:00Z'
+      }
+    ];
+  }
+
+  // ============================================================================
+  // FUNGSI KONEKSI SUPABASE (SAAT IS_PREVIEW = false)
+  // ============================================================================
+  async function loadAllDataFromSupabase() {
+    if (IS_PREVIEW || !supabase) return;
+
+    try {
+      // 1. Cek Session Admin Supabase Auth
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (sessionData?.session?.user) {
+        state.role = 'admin';
+        state.currentUser = {
+          email: sessionData.session.user.email,
+          name: 'Admin Panitia Disdikpora'
+        };
+      }
+
+      // 2. Ambil Pengaturan Aplikasi
+      const { data: pengData } = await supabase
+        .from('pengaturan_aplikasi')
+        .select('*')
+        .eq('id', 1)
+        .maybeSingle();
+      if (pengData) state.pengaturan = pengData;
+
+      // 3. Ambil Daftar Kegiatan Bimtek
+      const { data: kegData } = await supabase
+        .from('kegiatan_bimtek')
+        .select('*')
+        .order('created_at', { ascending: false });
+      state.kegiatanList = kegData || [];
+      if (state.kegiatanList.length > 0 && !state.activeKegiatanId) {
+        const aktif = state.kegiatanList.find(k => k.status_aktif) || state.kegiatanList[0];
+        state.activeKegiatanId = aktif.id;
+      }
+
+      // 4. Ambil Konfigurasi Kolom Formulir
+      const { data: kolData } = await supabase
+        .from('konfigurasi_kolom')
+        .select('*')
+        .order('urutan', { ascending: true });
+      state.kolomList = (kolData && kolData.length > 0) ? kolData : DEFAULT_20_COLUMNS;
+
+      // 5. Ambil Data Peserta
+      const { data: pesData } = await supabase
+        .from('peserta_bimtek')
+        .select('*')
+        .order('created_at', { ascending: false });
+      state.pesertaList = pesData || [];
+
+    } catch (err) {
+      console.error('Gagal memuat data dari Supabase:', err);
+      showToast('Gagal memuat data dari database Supabase: ' + err.message, 'error');
+    }
+  }
+
+  // ============================================================================
+  // HELPER UTILITAS & NOTIFIKASI TOAST
+  // ============================================================================
+  function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const el = document.createElement('div');
+    const bgClass = type === 'error'
+      ? 'bg-rose-600 text-white border-rose-400'
+      : type === 'warning'
+      ? 'bg-amber-500 text-white border-amber-300'
+      : 'bg-[#1B1446] text-white border-violet-400/40';
+    el.className = `pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-xl shadow-xl border ${bgClass} text-xs font-semibold transition-all duration-300`;
+    el.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span>${message}</span>
+      </div>
+      <button class="opacity-70 hover:opacity-100" onclick="this.parentElement.remove()">✕</button>
+    `;
+    container.appendChild(el);
+    setTimeout(() => { if (el.parentNode) el.remove(); }, 4000);
+  }
+
+  function getActiveKegiatan() {
+    return state.kegiatanList.find(k => k.id === state.activeKegiatanId) || state.kegiatanList[0] || null;
+  }
+
+  function isRegistrationClosed(keg) {
+    if (!keg) return true;
+    if (!keg.status_aktif) return true;
+    if (keg.batas_pendaftaran) {
+      const deadline = new Date(keg.batas_pendaftaran).getTime();
+      if (!isNaN(deadline) && Date.now() > deadline) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function formatTanggalIndo(dateStr) {
+    if (!dateStr) return '';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch {
+      return dateStr;
+    }
+  }
+
+  function formatDateTimeIndo(dtStr) {
+    if (!dtStr) return '-';
+    try {
+      const d = new Date(dtStr);
+      if (isNaN(d.getTime())) return dtStr;
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WITA';
+    } catch {
+      return dtStr;
+    }
+  }
+
+  // ============================================================================
+  // GENERATOR CETAK FORMULIR BIODATA (100% PERSIS FILE EXCEL DISDIKPORA DONGGALA)
+  // ============================================================================
+  function buildBiodataSheetHTML(peserta, kegiatan, pengaturan, activeColumns) {
+    const bio = peserta.biodata_json || {};
+    const namaPeserta = bio.nama || peserta.nama || '...............................................................';
+    const nipPeserta = bio.nip || peserta.nip || '';
+    const titimangsa = kegiatan?.titimangsa_ttd || 'Donggala, 9 November 2026';
+
+    const rowsHTML = activeColumns.map((col, idx) => {
+      let val = bio[col.kunci_kolom];
+      if (val === undefined || val === null) val = peserta[col.kunci_kolom] || '';
+      if (col.tipe_input === 'date' && val) {
+        val = formatTanggalIndo(val);
+      }
+      return `
+        <tr>
+          <td style="width: 32px; text-align: center; padding: 3.5px 4px; vertical-align: top; font-size: 11.5pt;">${idx + 1}</td>
+          <td style="width: 225px; padding: 3.5px 6px; vertical-align: top; font-size: 11.5pt;">${col.label_kolom}</td>
+          <td style="width: 16px; text-align: center; padding: 3.5px 2px; vertical-align: top; font-size: 11.5pt;">:</td>
+          <td style="padding: 3.5px 6px; vertical-align: top; font-size: 11.5pt; font-weight: ${col.kunci_kolom === 'nama' ? 'bold' : 'normal'}; border-bottom: 1px dotted #999;">${val || ''}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const showFoto = pengaturan.aktifkan_upload_foto && peserta.foto_base64;
+
+    return `
+      <div class="page-break-sheet bg-white text-black mx-auto" style="width: 210mm; min-height: 285mm; padding: 10mm 14mm; box-sizing: border-box; font-family: 'Times New Roman', Times, serif; color: #000;">
+        
+        <!-- KOP SURAT PEMERINTAH KABUPATEN DONGGALA -->
+        <table style="width: 100%; border-collapse: collapse; border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 10px;">
+          <tr>
+            <td style="width: 78px; vertical-align: middle; text-align: center; padding-bottom: 6px;">
+              <img src="${pengaturan.logo_url}" alt="Logo" style="width: 64px; height: 74px; object-fit: contain;" onerror="this.style.display='none'" />
+            </td>
+            <td style="text-align: center; vertical-align: middle; padding-bottom: 6px;">
+              <div style="font-size: 14pt; font-weight: bold; letter-spacing: 0.5px; line-height: 1.2;">${pengaturan.pemerintah || 'PEMERINTAH KABUPATEN DONGGALA'}</div>
+              <div style="font-size: 15.5pt; font-weight: bold; letter-spacing: 0.5px; line-height: 1.25;">${pengaturan.dinas || 'DINAS PENDIDIKAN, PEMUDA DAN OLAHRAGA'}</div>
+              <div style="font-size: 10.5pt; font-style: italic; margin-top: 2px;">${pengaturan.alamat_dinas || 'Alamat : Jalan Pue Mami Telp. (0457) 71461 Fax 71462 Donggala'}</div>
+            </td>
+            <td style="width: 40px;"></td>
+          </tr>
+        </table>
+
+        <!-- KOTAK FORMULIR BIODATA PESERTA & ATRIBUT DOKUMEN (PERSIS BARIS 5-8 EXCEL) -->
+        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #000; margin-bottom: 12px;">
+          <tr>
+            <td rowspan="4" style="width: 62%; text-align: center; vertical-align: middle; border-right: 1.5px solid #000; padding: 8px;">
+              <div style="font-size: 13.5pt; font-weight: bold; letter-spacing: 1px;">FORMULIR</div>
+              <div style="font-size: 14.5pt; font-weight: bold; letter-spacing: 1px; margin-top: 4px; text-decoration: underline;">BIODATA PESERTA</div>
+            </td>
+            <td style="width: 16%; font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000; border-right: 1px solid #000;">Kode Pos</td>
+            <td style="width: 22%; font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000;">${kegiatan?.kode_pos_dokumen || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000; border-right: 1px solid #000;">Revisi</td>
+            <td style="font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000;">${kegiatan?.revisi || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000; border-right: 1px solid #000;">Tgl Terbit</td>
+            <td style="font-size: 10pt; padding: 2px 6px; border-bottom: 1px solid #000;">${kegiatan?.tgl_terbit || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 10pt; padding: 2px 6px; border-right: 1px solid #000;">Halaman</td>
+            <td style="font-size: 10pt; padding: 2px 6px;">${kegiatan?.halaman || ''}</td>
+          </tr>
+        </table>
+
+        <!-- RINCIAN NAMA KEGIATAN, WAKTU, TEMPAT (BARIS 9-11 EXCEL) -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;">
+          <tr>
+            <td style="width: 195px; font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">Nama Kegiatan</td>
+            <td style="width: 16px; font-size: 11pt; font-weight: bold; padding: 3px 2px; text-align: center; vertical-align: top;">:</td>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">${kegiatan?.nama_kegiatan || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">Waktu Pelaksanaan</td>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 2px; text-align: center; vertical-align: top;">:</td>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">${kegiatan?.waktu_pelaksanaan || ''}</td>
+          </tr>
+          <tr>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">Tempat Pelaksanaan</td>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 2px; text-align: center; vertical-align: top;">:</td>
+            <td style="font-size: 11pt; font-weight: bold; padding: 3px 4px; vertical-align: top;">${kegiatan?.tempat_pelaksanaan || ''}</td>
+          </tr>
+        </table>
+
+        <hr style="border: 0; border-top: 1px solid #000; margin: 6px 0 10px 0;" />
+
+        <!-- DAFTAR ITEM BIODATA BERNOMOR URUT (BARIS 12-31 EXCEL) -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 18px;">
+          ${rowsHTML}
+        </table>
+
+        <!-- BAGIAN BAWAH: PAS FOTO (OPSIONAL SESUAI SAKLAR ADMIN) & TANDA TANGAN PESERTA (BARIS 33-39 EXCEL) -->
+        <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+          <tr>
+            <td style="width: 50%; vertical-align: bottom; padding-left: 36px;">
+              ${showFoto ? `
+                <div style="width: 3cm; height: 4cm; border: 1px solid #000; padding: 2px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                  <img src="${peserta.foto_base64}" alt="Pas Foto" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+              ` : ''}
+            </td>
+            <td style="width: 50%; text-align: left; padding-left: 30px; vertical-align: top; font-size: 11.5pt;">
+              <div style="margin-bottom: 6px;">${titimangsa}</div>
+              <div style="height: 68px; display: flex; align-items: center; justify-content: flex-start; margin: 2px 0;">
+                ${peserta.ttd_base64 ? `<img src="${peserta.ttd_base64}" alt="TTD" style="max-height: 64px; max-width: 210px; object-fit: contain;" />` : ''}
+              </div>
+              <div style="font-weight: bold; text-decoration: underline;">${namaPeserta}</div>
+              <div style="margin-top: 2px;">NIP. ${nipPeserta}</div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // RENDER NAVIGASI SIDEBAR (DESKTOP) & BOTTOM NAV (MOBILE)
+  // ============================================================================
+  function renderNavigations() {
+    const desktopNav = document.getElementById('desktop-nav');
+    const mobileNav = document.getElementById('mobile-bottom-nav');
+    const roleBadge = document.getElementById('sidebar-role-badge');
+    const userName = document.getElementById('sidebar-user-name');
+    const userSub = document.getElementById('sidebar-user-sub');
+    const userAvatar = document.getElementById('sidebar-user-avatar');
+    const logoutBtn = document.getElementById('sidebar-logout-btn');
+    const headerAuthBtn = document.getElementById('header-auth-btn');
+
+    // Update Header Date
+    const now = new Date();
+    document.getElementById('header-date-label').textContent = now.toLocaleDateString('id-ID', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    }).toUpperCase();
+
+    // Update WA Text
+    document.getElementById('floating-wa-text').textContent = state.pengaturan.nama_kontak_wa || 'Hubungi Panitia';
+
+    let menuGroups = [];
+    let mobileItems = [];
+
+    if (state.role === 'admin') {
+      roleBadge.textContent = 'Admin';
+      roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30';
+      userName.textContent = state.currentUser?.name || 'Admin Panitia';
+      userSub.textContent = state.currentUser?.email || 'Disdikpora Kab. Donggala';
+      userAvatar.textContent = 'AD';
+      logoutBtn.classList.remove('hidden');
+      headerAuthBtn.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5"></i><span>Panel Admin Aktif</span>`;
+      headerAuthBtn.onclick = () => navigate('admin_dashboard');
+
+      menuGroups = [
+        {
+          title: 'PANEL PANITIA (ADMIN)',
+          items: [
+            { id: 'admin_dashboard', label: 'Dashboard Ringkasan', icon: 'layout-grid', badge: state.pesertaList.length },
+            { id: 'admin_peserta', label: 'Data Peserta & Cetak', icon: 'users', badge: '' },
+            { id: 'admin_kegiatan', label: 'Tema, Jadwal & Batas', icon: 'calendar-range', badge: state.kegiatanList.length },
+            { id: 'admin_kolom', label: 'Kustom Kolom & Foto', icon: 'sliders-horizontal', badge: state.kolomList.filter(c => c.aktif).length },
+            { id: 'admin_pengaturan', label: 'Kop Surat & Nomor WA', icon: 'settings', badge: '' }
+          ]
+        },
+        {
+          title: 'HALAMAN PESERTA',
+          items: [
+            { id: 'pendaftaran', label: 'Formulir Pendaftaran', icon: 'file-plus-2', badge: '' },
+            { id: 'jadwal', label: 'Jadwal & Tema Bimtek', icon: 'clock', badge: '' }
+          ]
+        }
+      ];
+
+      mobileItems = [
+        { id: 'admin_dashboard', label: 'Dashboard', icon: 'layout-grid' },
+        { id: 'admin_peserta', label: 'Peserta', icon: 'users' },
+        { id: 'admin_kegiatan', label: 'Kegiatan', icon: 'calendar-range' },
+        { id: 'admin_kolom', label: 'Kolom', icon: 'sliders-horizontal' },
+        { id: 'admin_pengaturan', label: 'Pengaturan', icon: 'settings' }
+      ];
+
+    } else if (state.role === 'peserta' && state.currentUser) {
+      roleBadge.textContent = 'Peserta';
+      roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/30';
+      userName.textContent = state.currentUser.nama;
+      userSub.textContent = `NIK: ${state.currentUser.nik}`;
+      userAvatar.textContent = (state.currentUser.nama || 'P').substring(0, 2).toUpperCase();
+      logoutBtn.classList.remove('hidden');
+      headerAuthBtn.innerHTML = `<i data-lucide="printer" class="w-3.5 h-3.5"></i><span>Biodata Saya</span>`;
+      headerAuthBtn.onclick = () => navigate('peserta_area');
+
+      menuGroups = [
+        {
+          title: 'AREA PESERTA',
+          items: [
+            { id: 'peserta_area', label: 'Biodata & Cetak PDF', icon: 'printer', badge: 'Siap' },
+            { id: 'jadwal', label: 'Tema & Jadwal Bimtek', icon: 'calendar-clock', badge: '' },
+            { id: 'pendaftaran', label: 'Form Pendaftaran Baru', icon: 'file-plus-2', badge: '' }
+          ]
+        }
+      ];
+
+      mobileItems = [
+        { id: 'peserta_area', label: 'Biodata Saya', icon: 'printer' },
+        { id: 'jadwal', label: 'Jadwal', icon: 'calendar-clock' },
+        { id: 'pendaftaran', label: 'Form Baru', icon: 'file-plus-2' }
+      ];
+
+    } else {
+      roleBadge.textContent = 'Publik';
+      roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/30 text-violet-200 border border-violet-400/30';
+      userName.textContent = 'Calon Peserta Bimtek';
+      userSub.textContent = 'Disdikpora Kab. Donggala';
+      userAvatar.textContent = 'SD';
+      logoutBtn.classList.add('hidden');
+      headerAuthBtn.innerHTML = `<i data-lucide="log-in" class="w-3.5 h-3.5"></i><span>Login Peserta / Admin</span>`;
+      headerAuthBtn.onclick = () => navigate('login');
+
+      menuGroups = [
+        {
+          title: 'MENU UTAMA PESERTA',
+          items: [
+            { id: 'pendaftaran', label: 'Form Pendaftaran', icon: 'file-signature', badge: 'Buka' },
+            { id: 'jadwal', label: 'Tema & Jadwal Bimtek', icon: 'calendar-clock', badge: '' },
+            { id: 'login', label: 'Cek & Cetak Biodata', icon: 'printer', badge: '' }
+          ]
+        },
+        {
+          title: 'AKSES PANITIA',
+          items: [
+            { id: 'login', label: 'Login Admin Panitia', icon: 'shield-lock', badge: '' }
+          ]
+        }
+      ];
+
+      mobileItems = [
+        { id: 'pendaftaran', label: 'Daftar', icon: 'file-signature' },
+        { id: 'jadwal', label: 'Jadwal', icon: 'calendar-clock' },
+        { id: 'login', label: 'Cetak / Login', icon: 'user-check' }
+      ];
+    }
+
+    // Render Desktop Sidebar
+    desktopNav.innerHTML = menuGroups.map(group => `
+      <div class="space-y-1">
+        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-indigo-300/50 mb-1.5">${group.title}</p>
+        ${group.items.map(item => {
+          const active = state.currentView === item.id;
+          return `
+            <button onclick="window.app.navigate('${item.id}')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition ${
+              active
+                ? 'bg-white/15 text-white shadow-sm backdrop-blur-md border border-white/10'
+                : 'text-indigo-100/75 hover:bg-white/5 hover:text-white'
+            }">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="${item.icon}" class="w-4 h-4 ${active ? 'text-violet-300' : 'text-indigo-300/70'}"></i>
+                <span>${item.label}</span>
+              </div>
+              ${item.badge !== '' ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${active ? 'bg-violet-500 text-white' : 'bg-white/10 text-indigo-200'}">${item.badge}</span>` : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+    `).join('');
+
+    // Render Mobile Bottom Nav
+    mobileNav.innerHTML = mobileItems.map(item => {
+      const active = state.currentView === item.id;
+      return `
+        <button onclick="window.app.navigate('${item.id}')" class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition ${
+          active ? 'text-white bg-white/15 font-bold' : 'text-indigo-200/70 hover:text-white font-medium'
+        }">
+          <i data-lucide="${item.icon}" class="w-4 h-4 mb-0.5 ${active ? 'text-violet-300' : ''}"></i>
+          <span class="text-[10px]">${item.label}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  // ============================================================================
+  // UPDATE HERO BANNER AURORA SESUAI KEGIATAN AKTIF
+  // ============================================================================
+  function renderHeroBanner() {
+    const keg = getActiveKegiatan();
+    const selectEl = document.getElementById('active-kegiatan-select');
+    const sidebarLogo = document.getElementById('sidebar-logo');
+
+    if (sidebarLogo && state.pengaturan.logo_url) {
+      sidebarLogo.src = state.pengaturan.logo_url;
+    }
+
+    document.getElementById('banner-instansi-title').textContent =
+      `${state.pengaturan.dinas || 'DINAS PENDIDIKAN, PEMUDA DAN OLAHRAGA'} • ${state.pengaturan.pemerintah || 'KAB. DONGGALA'}`;
+
+    if (selectEl) {
+      selectEl.innerHTML = state.kegiatanList.map(k => `
+        <option value="${k.id}" class="text-gray-900" ${k.id === state.activeKegiatanId ? 'selected' : ''}>
+          ${k.nama_kegiatan}
+        </option>
+      `).join('');
+    }
+
+    if (!keg) {
+      document.getElementById('banner-kegiatan-nama').textContent = 'Belum Ada Kegiatan Bimtek Aktif';
+      document.getElementById('banner-kegiatan-tema').textContent = 'Silakan login sebagai Admin untuk menambahkan kegiatan baru.';
+      return;
+    }
+
+    document.getElementById('banner-kegiatan-nama').textContent = keg.nama_kegiatan;
+    document.getElementById('banner-kegiatan-tema').textContent = `Tema: ${keg.tema_kegiatan || '-'}`;
+    document.getElementById('banner-waktu').textContent = keg.waktu_pelaksanaan || '-';
+    document.getElementById('banner-tempat').textContent = keg.tempat_pelaksanaan || '-';
+    document.getElementById('banner-deadline-text').textContent = formatDateTimeIndo(keg.batas_pendaftaran);
+
+    const closed = isRegistrationClosed(keg);
+    const badgeEl = document.getElementById('banner-countdown-badge');
+    if (closed) {
+      badgeEl.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/30 text-rose-200 border border-rose-300/40 mt-0.5';
+      badgeEl.textContent = '• Pendaftaran Ditutup / Lewat Batas Waktu';
+    } else {
+      badgeEl.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30 mt-0.5';
+      badgeEl.textContent = '• Pendaftaran Sedang Dibuka';
+    }
+
+    const countPeserta = state.pesertaList.filter(p => p.kegiatan_id === keg.id).length;
+    document.getElementById('banner-total-peserta').textContent = countPeserta;
+    document.getElementById('banner-kode-dok').textContent = `Kode Pos: ${keg.kode_pos_dokumen || '-'} • Terbit: ${keg.tgl_terbit || '-'}`;
+  }
+
+  // ============================================================================
+  // KOMPONEN TOUCH SIGNATURE CANVAS (TANDA TANGAN LANGSUNG DI HP / LAPTOP)
+  // ============================================================================
+  let sigPadDataUrl = '';
+  let uploadedPhotoDataUrl = '';
+
+  function initSignatureCanvas(canvasId, initialDataUrl = '') {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let hasDrawn = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width || 450;
+      canvas.height = rect.height || 160;
+      ctx.strokeStyle = '#130E33';
+      ctx.lineWidth = 2.6;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      if (initialDataUrl) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        img.src = initialDataUrl;
+        sigPadDataUrl = initialDataUrl;
+      }
+    }
+
+    setTimeout(resizeCanvas, 50);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches && e.touches.length > 0) {
+        return {
+          x: e.touches[0].clientX - rect.left,
+          y: e.touches[0].clientY - rect.top
+        };
+      }
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true;
+      hasDrawn = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function moveDraw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function endDraw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      drawing = false;
+      if (hasDrawn) {
+        sigPadDataUrl = canvas.toDataURL('image/png');
+      }
+    }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', moveDraw);
+    window.addEventListener('mouseup', endDraw);
+
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', moveDraw, { passive: false });
+    canvas.addEventListener('touchend', endDraw, { passive: false });
+  }
+
+  function clearSignatureCanvas(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    sigPadDataUrl = '';
+  }
+
+  // ============================================================================
+  // VIEW 1: FORMULIR PENDAFTARAN PESERTA (BENTO GRID + FOTO + TOUCH SIGNATURE)
+  // ============================================================================
+  function renderPendaftaranView() {
+    const keg = getActiveKegiatan();
+    const closed = isRegistrationClosed(keg);
+    const activeCols = [...state.kolomList].filter(c => c.aktif).sort((a, b) => a.urutan - b.urutan);
+
+    if (!keg) {
+      return `
+        <div class="bento-card p-10 text-center space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center mx-auto">
+            <i data-lucide="calendar-x" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-base font-bold text-gray-900">Belum Ada Kegiatan Bimtek yang Dibuka</h3>
+          <p class="text-xs text-gray-500 max-w-md mx-auto">Panitia belum membuka kegiatan aktif. Silakan hubungi WhatsApp Panitia atau masuk ke Dashboard Admin.</p>
+        </div>
+      `;
+    }
+
+    if (closed) {
+      return `
+        <div class="bento-card p-8 text-center space-y-4 border-rose-200 bg-rose-50/40">
+          <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+            <i data-lucide="lock" class="w-7 h-7"></i>
+          </div>
+          <div class="space-y-1">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-700">Pendaftaran Ditutup</span>
+            <h3 class="text-lg font-extrabold text-gray-900">Batas Waktu Pendaftaran Telah Berakhir</h3>
+            <p class="text-xs text-gray-600 max-w-lg mx-auto">
+              Pendaftaran untuk kegiatan <strong>${keg.nama_kegiatan}</strong> ditutup pada <strong>${formatDateTimeIndo(keg.batas_pendaftaran)}</strong>.
+              Bagi peserta yang sudah mendaftar, silakan masuk melalui menu <strong>Cek & Cetak Biodata</strong>.
+            </p>
+          </div>
+          <div class="flex justify-center gap-3 pt-2">
+            <button onclick="window.app.navigate('login')" class="px-4 py-2 rounded-xl bg-[#6D4AFF] text-white text-xs font-bold shadow">
+              Login & Cetak Biodata Peserta
+            </button>
+            <button onclick="window.app.openWhatsAppPanitia()" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow">
+              Hubungi WA Panitia
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    const formInputsHTML = activeCols.map((col, index) => {
+      const reqStar = col.wajib_diisi ? `<span class="text-rose-500">*</span>` : '';
+      const reqAttr = col.wajib_diisi ? 'required' : '';
+      const defaultVal = col.kunci_kolom === 'kabupaten_kota' ? 'Donggala' : '';
+
+      let inputControl = '';
+      if (col.tipe_input === 'select') {
+        const opts = (col.opsi_pilihan || '').split(',').map(s => s.trim()).filter(Boolean);
+        inputControl = `
+          <select name="${col.kunci_kolom}" ${reqAttr} class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600 transition">
+            <option value="">-- Pilih ${col.label_kolom} --</option>
+            ${opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+          </select>
+        `;
+      } else if (col.tipe_input === 'textarea') {
+        inputControl = `
+          <textarea name="${col.kunci_kolom}" rows="2" ${reqAttr} placeholder="Isi ${col.label_kolom}..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600 transition"></textarea>
+        `;
+      } else {
+        inputControl = `
+          <input type="${col.tipe_input === 'date' ? 'date' : col.tipe_input === 'number' ? 'number' : 'text'}"
+                 name="${col.kunci_kolom}"
+                 value="${defaultVal}"
+                 ${reqAttr}
+                 placeholder="Masukkan ${col.label_kolom}..."
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600 transition" />
+        `;
+      }
+
+      return `
+        <div class="space-y-1.5">
+          <label class="flex items-center justify-between text-xs font-semibold text-gray-700">
+            <span><span class="text-violet-600 font-bold mr-1">${index + 1}.</span> ${col.label_kolom} ${reqStar}</span>
+            ${col.is_kunci_login ? `<span class="text-[10px] px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 font-bold">Akses Login</span>` : ''}
+          </label>
+          ${inputControl}
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- KOLOM KIRI LEBAR (8 KOLOM): FORMULIR BIODATA DINAMIS -->
+        <form id="form-pendaftaran-peserta" onsubmit="window.app.submitPendaftaran(event)" class="lg:col-span-8 bento-card p-5 sm:p-7 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-bold text-gray-900">Formulir Biodata Peserta Bimtek</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-violet-100 text-violet-700">${activeCols.length} Item Isian</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">Isi data dengan lengkap dan benar. Hasil input otomatis diformat menjadi Lembar Biodata Resmi Disdikpora.</p>
+            </div>
+            <button type="button" onclick="window.app.navigate('login')" class="text-xs font-bold text-violet-600 hover:text-violet-800 inline-flex items-center gap-1 shrink-0">
+              <span>Sudah mendaftar? Cetak di sini</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Grid 2 Kolom untuk 20 Item Biodata -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            ${formInputsHTML}
+          </div>
+
+          <!-- BAGIAN UPLOAD FOTO (MUNCUL JIKA DIAKTIFKAN ADMIN) -->
+          ${state.pengaturan.aktifkan_upload_foto ? `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                    <i data-lucide="camera" class="w-4 h-4 text-violet-600"></i>
+                    <span>Upload Pas Foto Peserta ${state.pengaturan.wajib_upload_foto ? '<span class="text-rose-500">*</span>' : '(Opsional)'}</span>
+                  </h4>
+                  <p class="text-[11px] text-gray-500">Pas foto akan ditampilkan secara rapi di bagian bawah formulir biodata cetak.</p>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Fitur Aktif</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <div id="photo-preview-box" class="w-20 h-24 rounded-xl border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                  <i data-lucide="user" class="w-7 h-7 text-slate-300"></i>
+                </div>
+                <div class="space-y-2 flex-1">
+                  <input type="file" id="input-foto-peserta" accept="image/*" onchange="window.app.handlePhotoUpload(event)" class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-violet-100 file:text-violet-700 hover:file:bg-violet-200" />
+                  <p class="text-[10px] text-gray-400">Format JPG/PNG, otomatis dikompresi agar ringan dan tajam saat dicetak.</p>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- BAGIAN TANDA TANGAN LANGSUNG DI LAYAR HP / LAPTOP -->
+          <div class="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-200/80 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h4 class="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                  <i data-lucide="pen-tool" class="w-4 h-4 text-violet-600"></i>
+                  <span>Tanda Tangan Langsung Peserta (Gunakan Jari di Layar HP / Mouse) <span class="text-rose-500">*</span></span>
+                </h4>
+                <p class="text-[11px] text-gray-500">Tanda tangan ini langsung ditempatkan di atas nama Anda pada hasil cetak Formulir Biodata.</p>
+              </div>
+              <button type="button" onclick="window.app.clearSignature('sig-canvas')" class="px-3 py-1 rounded-lg bg-white border border-slate-200 hover:bg-rose-50 hover:text-rose-600 text-[11px] font-semibold text-gray-700 transition flex items-center gap-1 shadow-sm">
+                <i data-lucide="eraser" class="w-3.5 h-3.5"></i>
+                <span>Ulangi / Bersihkan TTD</span>
+              </button>
+            </div>
+            <div class="bg-white rounded-xl border-2 border-dashed border-indigo-300 overflow-hidden relative">
+              <canvas id="sig-canvas" class="w-full h-40 block"></canvas>
+              <div class="pointer-events-none absolute bottom-2 right-3 text-[10px] text-slate-400 italic">
+                Area Tanda Tangan Peserta (${keg.titimangsa_ttd || 'Donggala, 2026'})
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Submit -->
+          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="text-[11px] text-gray-500">
+              Gunakan <strong>NIK</strong> & <strong>No. HP</strong> Anda untuk mencetak ulang biodata kapan saja.
+            </p>
+            <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow-lg shadow-violet-500/25 transition flex items-center justify-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span>Simpan Pendaftaran & Cetak Biodata</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- KOLOM KANAN SEMPIT (4 KOLOM): JADWAL ("TODAY" CARD STYLE) & PANDUAN SINGKAT -->
+        <div class="lg:col-span-4 space-y-5">
+          <!-- Kartu Jadwal Kegiatan ("Today" Timeline Style) -->
+          <div class="bento-card p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-gray-900">Jadwal & Agenda Bimtek</h4>
+              <span class="text-[11px] font-semibold text-violet-600">${(keg.jadwal_kegiatan || []).length} Sesi</span>
+            </div>
+            <div class="space-y-3.5 divide-y divide-slate-100">
+              ${(keg.jadwal_kegiatan || []).length === 0 ? `
+                <p class="text-xs text-gray-400 py-3">Belum ada rincian jadwal sesi.</p>
+              ` : (keg.jadwal_kegiatan || []).map((j, i) => `
+                <div class="${i > 0 ? 'pt-3.5' : ''} flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-violet-100 text-violet-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    0${i + 1}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] font-bold text-violet-600">${j.waktu}</p>
+                    <p class="text-xs font-bold text-gray-800 leading-snug mt-0.5">${j.materi}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">${j.narasumber}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Kartu Bantuan WA Panitia -->
+          <div class="bento-card p-5 space-y-3 bg-gradient-to-br from-white to-emerald-50/40">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <i data-lucide="headphones" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-gray-900">Butuh Bantuan Pendaftaran?</h4>
+                <p class="text-[11px] text-gray-500">${state.pengaturan.nama_kontak_wa}</p>
+              </div>
+            </div>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Jika mengalami kendala pengisian biodata atau perubahan data sekolah/rekening, silakan hubungi panitia melalui WhatsApp.
+            </p>
+            <button onclick="window.app.openWhatsAppPanitia()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>Chat WhatsApp Panitia</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 2: JADWAL & TEMA KEGIATAN LENGKAP
+  // ============================================================================
+  function renderJadwalView() {
+    const keg = getActiveKegiatan();
+    if (!keg) return `<div class="bento-card p-8 text-center text-xs text-gray-500">Belum ada kegiatan.</div>`;
+
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 bento-card p-6 space-y-4">
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-violet-100 text-violet-700">Informasi Kegiatan</span>
+          <h3 class="text-base font-extrabold text-gray-900">${keg.nama_kegiatan}</h3>
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <p class="text-[11px] font-bold uppercase text-gray-400">Tema Kegiatan Bimtek:</p>
+            <p class="text-xs font-semibold text-gray-800 leading-relaxed">${keg.tema_kegiatan || '-'}</p>
+          </div>
+          <div class="space-y-2.5 text-xs pt-2">
+            <div class="flex justify-between py-2 border-b border-slate-100">
+              <span class="text-gray-500">Waktu Pelaksanaan</span>
+              <span class="font-bold text-gray-900">${keg.waktu_pelaksanaan}</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-slate-100">
+              <span class="text-gray-500">Tempat Pelaksanaan</span>
+              <span class="font-bold text-gray-900">${keg.tempat_pelaksanaan}</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-slate-100">
+              <span class="text-gray-500">Batas Akhir Pendaftaran</span>
+              <span class="font-bold text-rose-600">${formatDateTimeIndo(keg.batas_pendaftaran)}</span>
+            </div>
+            <div class="flex justify-between py-2">
+              <span class="text-gray-500">Titi Mangsa Lembar Biodata</span>
+              <span class="font-bold text-gray-900">${keg.titimangsa_ttd}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bento-card p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-bold text-gray-900">Rundown & Jadwal Materi Bimtek</h3>
+              <p class="text-xs text-gray-500">Susunan materi dan narasumber kegiatan</p>
+            </div>
+            <button onclick="window.app.navigate('pendaftaran')" class="px-3.5 py-2 rounded-xl bg-[#6D4AFF] text-white text-xs font-bold">
+              Isi Biodata Sekarang
+            </button>
+          </div>
+          <div class="space-y-3">
+            ${(keg.jadwal_kegiatan || []).map((item, idx) => `
+              <div class="p-4 rounded-xl border border-slate-200/80 hover:border-violet-300 transition flex items-start gap-4 bg-slate-50/40">
+                <div class="w-10 h-10 rounded-xl bg-[#1B1446] text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  #${idx + 1}
+                </div>
+                <div class="space-y-1 flex-1">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-100 text-violet-700">${item.waktu}</span>
+                  <h4 class="text-sm font-bold text-gray-900">${item.materi}</h4>
+                  <p class="text-xs text-gray-600 flex items-center gap-1.5">
+                    <i data-lucide="mic" class="w-3.5 h-3.5 text-violet-600"></i>
+                    <span>${item.narasumber}</span>
+                  </p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 3: HALAMAN LOGIN HYBRID (PESERTA VIA TABEL DB & ADMIN VIA SUPABASE AUTH)
+  // ============================================================================
+  function renderLoginView() {
+    return `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto py-2">
+        
+        <!-- KARTU 1: LOGIN PESERTA (VALIDASI TABEL SUPABASE) -->
+        <div class="bento-card p-6 space-y-5 border-t-4 border-t-[#6D4AFF]">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-violet-100 text-violet-700 flex items-center justify-center">
+              <i data-lucide="printer" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-violet-600">Validasi Database Peserta</span>
+              <h3 class="text-base font-extrabold text-gray-900">Login Peserta (Cek & Cetak Biodata)</h3>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Bagi peserta yang sudah mengisi formulir, masukkan <strong>NIK / NIP</strong> dan <strong>Nomor HP</strong> Anda untuk melihat, memperbarui, atau mencetak Formulir Biodata.
+          </p>
+          <form onsubmit="window.app.handleLoginPeserta(event)" class="space-y-3.5">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">NIK atau NIP Peserta</label>
+              <input type="text" id="login-peserta-id" required placeholder="Contoh: 7203085204880001" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor HP (Password Peserta)</label>
+              <input type="text" id="login-peserta-hp" required placeholder="Contoh: 081341223344" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600" />
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow transition flex items-center justify-center gap-2">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              <span>Cek Data & Cetak Biodata Saya</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- KARTU 2: LOGIN ADMIN PANITIA (SUPABASE AUTHENTICATION) -->
+        <div class="bento-card p-6 space-y-5 border-t-4 border-t-[#1B1446]">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-indigo-950 text-white flex items-center justify-center">
+              <i data-lucide="shield-check" class="w-6 h-6 text-violet-300"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-900">Supabase Authentication</span>
+              <h3 class="text-base font-extrabold text-gray-900">Login Admin Panitia Disdikpora</h3>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Khusus panitia untuk mengelola tema/jadwal kegiatan, menambah/menghapus item kolom biodata, mengaktifkan upload foto, dan cetak massal.
+          </p>
+          <form onsubmit="window.app.handleLoginAdmin(event)" class="space-y-3.5">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Email Admin</label>
+              <input type="email" id="login-admin-email" required placeholder="admin@disdikpora.donggalakab.go.id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+              <input type="password" id="login-admin-password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-600" />
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1B1446] hover:bg-[#291F66] text-white text-xs font-bold shadow transition flex items-center justify-center gap-2">
+              <i data-lucide="key-round" class="w-4 h-4"></i>
+              <span>Masuk ke Panel Admin</span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 4: AREA PESERTA (LIHAT DATA, CETAK FORMULIR BIODATA, UPDATE TTD)
+  // ============================================================================
+  function renderPesertaAreaView() {
+    const p = state.currentUser;
+    if (!p) return renderLoginView();
+
+    const keg = state.kegiatanList.find(k => k.id === p.kegiatan_id) || getActiveKegiatan();
+    const activeCols = [...state.kolomList].filter(c => c.aktif).sort((a, b) => a.urutan - b.urutan);
+    const sheetHTML = buildBiodataSheetHTML(p, keg, state.pengaturan, activeCols);
+
+    return `
+      <div class="space-y-5">
+        <div class="bento-card p-5 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-white to-violet-50/50">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+              <i data-lucide="check-check" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-extrabold text-gray-900">${p.nama}</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">• Terdaftar Resmi</span>
+              </div>
+              <p class="text-xs text-gray-500">NIK: ${p.nik} • Instansi: ${p.biodata_json?.instansi_sekolah || '-'}</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <button onclick="window.app.previewSinglePeserta('${p.id}')" class="px-4 py-2.5 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow flex items-center gap-2">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              <span>Cetak / Download PDF Formulir Biodata</span>
+            </button>
+            <button onclick="window.app.logoutAll()" class="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-gray-700 hover:bg-slate-50 text-xs font-semibold">
+              Keluar
+            </button>
+          </div>
+        </div>
+
+        <!-- Pratinjau Langsung Lembar Biodata Resmi -->
+        <div class="bento-card p-4 sm:p-8 bg-slate-200/70 overflow-x-auto flex justify-center">
+          <div class="shadow-2xl border border-slate-300 bg-white">
+            ${sheetHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 5: ADMIN DASHBOARD (ATRIUM BENTO GRID STYLE)
+  // ============================================================================
+  function renderAdminDashboardView() {
+    const keg = getActiveKegiatan();
+    const pesertaKeg = keg ? state.pesertaList.filter(p => p.kegiatan_id === keg.id) : state.pesertaList;
+    const total = pesertaKeg.length;
+    const lengkapRekening = pesertaKeg.filter(p => (p.biodata_json?.no_rekening_bpd || '').trim() !== '').length;
+    const lengkapTTD = pesertaKeg.filter(p => (p.ttd_base64 || '').trim() !== '').length;
+    const persenLengkap = total > 0 ? Math.round((lengkapRekening / total) * 100) : 0;
+    const persenTTD = total > 0 ? Math.round((lengkapTTD / total) * 100) : 0;
+
+    // Hitung sebaran per Kecamatan untuk Pill Bar Chart
+    const kecMap = {};
+    pesertaKeg.forEach(p => {
+      const kec = p.biodata_json?.kecamatan || 'Lainnya';
+      kecMap[kec] = (kecMap[kec] || 0) + 1;
+    });
+    const kecEntries = Object.entries(kecMap).sort((a, b) => b[1] - a[1]).slice(0, 7);
+    const maxKec = Math.max(...kecEntries.map(e => e[1]), 1);
+
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- KOLOM KIRI (8 KOLOM): PENDAFTAR TERBARU ("NEEDS YOUR DECISION" STYLE) & GRAFIK BAR -->
+        <div class="lg:col-span-8 space-y-6">
+          
+          <!-- Kartu Daftar Peserta Terbaru dengan Tombol Cetak Cepat -->
+          <div class="bento-card p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <h3 class="text-sm font-bold text-gray-900">Pendaftar Bimtek Terbaru</h3>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-violet-100 text-violet-700">${total}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="window.app.printAllPesertaInActiveKegiatan()" class="px-3 py-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-700 text-xs font-bold flex items-center gap-1.5 transition">
+                  <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                  <span>Cetak Semua (${total})</span>
+                </button>
+                <button onclick="window.app.navigate('admin_peserta')" class="text-xs font-semibold text-gray-500 hover:text-gray-900 flex items-center gap-1">
+                  <span>Lihat Semua</span>
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+              ${pesertaKeg.length === 0 ? `
+                <div class="py-10 text-center text-xs text-gray-400">Belum ada data peserta pada kegiatan ini.</div>
+              ` : pesertaKeg.slice(0, 5).map(p => {
+                const bio = p.biodata_json || {};
+                const hasRek = (bio.no_rekening_bpd || '').trim() !== '';
+                return `
+                  <div class="py-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                      <div class="w-9 h-9 rounded-lg bg-violet-100 text-violet-700 font-bold text-xs flex items-center justify-center shrink-0 overflow-hidden">
+                        ${p.foto_base64 ? `<img src="${p.foto_base64}" class="w-full h-full object-cover" />` : (p.nama || 'P').substring(0, 2).toUpperCase()}
+                      </div>
+                      <div class="min-w-0">
+                        <p class="text-xs font-bold text-gray-900 truncate">${p.nama}</p>
+                        <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500 mt-0.5">
+                          <span class="truncate">${bio.instansi_sekolah || '-'} • Kec. ${bio.kecamatan || '-'}</span>
+                          <span class="px-2 py-0.2 rounded-full text-[10px] font-semibold ${hasRek ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                            • ${hasRek ? 'Rek. BPD Lengkap' : 'Tanpa Rek. BPD'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 ml-auto">
+                      <button onclick="window.app.previewSinglePeserta('${p.id}')" class="px-3 py-1.5 rounded-lg bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-[11px] font-bold transition shadow-sm">
+                        Cetak Biodata
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Kartu Statistik Bawah: Bar Chart Kecamatan & Donut Kelengkapan -->
+          <div class="bento-card p-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Vertical Pill Bar Chart -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-900">Sebaran Peserta per Kecamatan</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Real-time</span>
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-extrabold text-gray-900">${total}</span>
+                <span class="text-xs text-gray-500">Total Peserta Terdaftar</span>
+              </div>
+              <div class="h-36 flex items-end gap-3 pt-4 px-2 border-b border-slate-100">
+                ${kecEntries.length === 0 ? `<p class="text-xs text-gray-400 my-auto mx-auto">Belum ada statistik kecamatan</p>` : kecEntries.map((entry, idx) => {
+                  const heightPct = Math.max(Math.round((entry[1] / maxKec) * 100), 18);
+                  const isTop = idx === 0;
+                  return `
+                    <div class="flex-1 flex flex-col items-center gap-1.5">
+                      <span class="text-[10px] font-bold text-gray-700">${entry[1]}</span>
+                      <div class="w-full max-w-[28px] rounded-t-lg transition-all ${isTop ? 'bg-gradient-to-t from-violet-700 to-[#6D4AFF]' : 'bg-violet-200'}" style="height: ${heightPct}px;"></div>
+                      <span class="text-[9px] font-semibold text-gray-400 truncate max-w-[54px]" title="${entry[0]}">${entry[0]}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Donut Chart Kelengkapan Biodata & Rekening BPD -->
+            <div class="space-y-3 md:border-l md:border-slate-100 md:pl-6 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-900">Kelengkapan Data & TTD</span>
+                <span class="text-[11px] text-gray-400">Validasi</span>
+              </div>
+              <div class="flex items-center gap-5 my-auto py-2">
+                <div class="relative w-24 h-24 rounded-full flex items-center justify-center shrink-0"
+                     style="background: conic-gradient(#6D4AFF ${persenLengkap * 3.6}deg, #E2E8F0 0deg);">
+                  <div class="w-16 h-16 rounded-full bg-white flex flex-col items-center justify-center">
+                    <span class="text-base font-extrabold text-gray-900">${persenLengkap}%</span>
+                    <span class="text-[9px] text-gray-400">Lengkap</span>
+                  </div>
+                </div>
+                <div class="space-y-2 text-xs flex-1">
+                  <div class="flex items-center justify-between">
+                    <span class="flex items-center gap-1.5 text-gray-600"><span class="w-2 h-2 rounded-full bg-[#6D4AFF]"></span>Rek. BPD Sulteng</span>
+                    <span class="font-bold text-gray-900">${lengkapRekening}</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="flex items-center gap-1.5 text-gray-600"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Tanda Tangan HP</span>
+                    <span class="font-bold text-gray-900">${lengkapTTD} (${persenTTD}%)</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="flex items-center gap-1.5 text-gray-600"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Kolom Aktif</span>
+                    <span class="font-bold text-gray-900">${state.kolomList.filter(c => c.aktif).length} Item</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- KOLOM KANAN (4 KOLOM): AKSES CEPAT KUSTOMISASI ADMIN -->
+        <div class="lg:col-span-4 space-y-5">
+          <div class="bento-card p-5 space-y-3.5">
+            <h4 class="text-sm font-bold text-gray-900">Kendali Cepat Panitia</h4>
+            <div class="space-y-2.5">
+              <button onclick="window.app.navigate('admin_kolom')" class="w-full p-3 rounded-xl border border-slate-200/80 hover:border-violet-400 hover:bg-violet-50/40 transition flex items-center justify-between text-left">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-violet-100 text-violet-700 flex items-center justify-center">
+                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-gray-900">Tambah / Hapus Item Kolom</p>
+                    <p class="text-[11px] text-gray-500">Atur 20+ kolom & saklar upload foto</p>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+              </button>
+
+              <button onclick="window.app.navigate('admin_kegiatan')" class="w-full p-3 rounded-xl border border-slate-200/80 hover:border-violet-400 hover:bg-violet-50/40 transition flex items-center justify-between text-left">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+                    <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-gray-900">Tema, Jadwal & Batas Waktu</p>
+                    <p class="text-[11px] text-gray-500">Kelola kegiatan & deadline pendaftaran</p>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+              </button>
+
+              <button onclick="window.app.exportExcelPeserta()" class="w-full p-3 rounded-xl border border-slate-200/80 hover:border-emerald-400 hover:bg-emerald-50/40 transition flex items-center justify-between text-left">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-gray-900">Download Rekap Excel (.xls)</p>
+                    <p class="text-[11px] text-gray-500">Ekspor seluruh biodata peserta</p>
+                  </div>
+                </div>
+                <i data-lucide="download" class="w-4 h-4 text-gray-400"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Ringkasan Status Fitur Upload Foto & WA -->
+          <div class="bento-card p-5 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400">Status Konfigurasi</h4>
+            <div class="flex items-center justify-between py-1.5 border-b border-slate-100 text-xs">
+              <span class="text-gray-600">Menu Upload Foto Peserta</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${state.pengaturan.aktifkan_upload_foto ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}">
+                ${state.pengaturan.aktifkan_upload_foto ? 'AKTIF (ON)' : 'NONAKTIF (OFF)'}
+              </span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 border-b border-slate-100 text-xs">
+              <span class="text-gray-600">Nomor WA Panitia</span>
+              <span class="font-bold text-gray-900">${state.pengaturan.no_wa_panitia}</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 text-xs">
+              <span class="text-gray-600">Tanda Tangan Layar HP</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-100 text-violet-700">Aktif Otomatis</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 6: ADMIN KUSTOMISASI KOLOM ITEM & SAKLAR UPLOAD FOTO (FORM BUILDER)
+  // ============================================================================
+  function renderAdminKolomView() {
+    const sortedCols = [...state.kolomList].sort((a, b) => a.urutan - b.urutan);
+
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- KIRI (5 KOLOM): SAKLAR UPLOAD FOTO & FORM TAMBAH KOLOM BARU -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Saklar Upload Foto Peserta -->
+          <div class="bento-card p-5 space-y-4 border-l-4 border-l-[#6D4AFF]">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-gray-900">Pengaturan Menu Upload Foto</h3>
+                <p class="text-xs text-gray-500">Tampilkan atau sembunyikan kolom upload pas foto peserta</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" ${state.pengaturan.aktifkan_upload_foto ? 'checked' : ''} onchange="window.app.toggleUploadFoto(this.checked)" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6D4AFF]"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+              <span class="text-gray-600">Wajibkan peserta mengunggah foto?</span>
+              <input type="checkbox" ${state.pengaturan.wajib_upload_foto ? 'checked' : ''} onchange="window.app.toggleWajibFoto(this.checked)" class="w-4 h-4 accent-[#6D4AFF] rounded" />
+            </div>
+          </div>
+
+          <!-- Form Tambah Item Kolom Biodata Baru -->
+          <form onsubmit="window.app.handleAddKolom(event)" class="bento-card p-5 space-y-4">
+            <div>
+              <h3 class="text-sm font-bold text-gray-900">Tambah Item Kolom Biodata Baru</h3>
+              <p class="text-xs text-gray-500">Item baru otomatis masuk ke formulir pendaftaran dan tercetak di lembar biodata.</p>
+            </div>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Nama / Label Item Kolom</label>
+                <input type="text" id="new-col-label" required placeholder="Contoh: NUPTK / Ukuran Baju / Nama Bank" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-medium" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Tipe Input</label>
+                  <select id="new-col-type" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium">
+                    <option value="text">Teks Singkat</option>
+                    <option value="number">Angka</option>
+                    <option value="date">Tanggal</option>
+                    <option value="select">Pilihan Dropdown</option>
+                    <option value="textarea">Teks Panjang</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor Urut Cetak</label>
+                  <input type="number" id="new-col-order" value="${sortedCols.length + 1}" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Opsi Pilihan (Jika tipe Dropdown, pisahkan koma)</label>
+                <input type="text" id="new-col-options" placeholder="Contoh: SD, SMP, TK/PAUD" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-medium" />
+              </div>
+              <label class="flex items-center gap-2 text-xs font-semibold text-gray-700 pt-1">
+                <input type="checkbox" id="new-col-req" checked class="w-4 h-4 accent-[#6D4AFF] rounded" />
+                <span>Wajib diisi oleh peserta</span>
+              </label>
+            </div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow flex items-center justify-center gap-1.5">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>Tambahkan ke Formulir Biodata</span>
+            </button>
+          </form>
+
+        </div>
+
+        <!-- KANAN (7 KOLOM): DAFTAR ITEM KOLOM AKTIF & HAPUS ITEM YANG TIDAK DIBUTUHKAN -->
+        <div class="lg:col-span-7 bento-card p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-gray-900">Daftar Kolom Formulir Biodata (${sortedCols.length} Item)</h3>
+              <p class="text-xs text-gray-500">Matikan saklar atau klik ikon tempat sampah untuk menghapus item yang tidak dibutuhkan.</p>
+            </div>
+            <button onclick="window.app.resetDefaultColumns()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-gray-700 text-[11px] font-semibold">
+              Reset ke 20 Kolom Standar
+            </button>
+          </div>
+
+          <div class="divide-y divide-slate-100 max-h-[600px] overflow-y-auto pr-1">
+            ${sortedCols.map((col, idx) => `
+              <div class="py-2.5 flex items-center justify-between gap-3 ${col.aktif ? '' : 'opacity-50'}">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="w-7 h-7 rounded-lg bg-slate-100 text-gray-700 font-bold text-xs flex items-center justify-center shrink-0">
+                    ${idx + 1}
+                  </span>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <p class="text-xs font-bold text-gray-900 truncate">${col.label_kolom}</p>
+                      <span class="px-2 py-0.2 rounded bg-slate-100 text-gray-500 text-[10px] font-medium">${col.tipe_input}</span>
+                      ${col.wajib_diisi ? `<span class="text-[10px] text-rose-600 font-bold">Wajib</span>` : ''}
+                    </div>
+                    <p class="text-[10px] text-gray-400 truncate">Key: ${col.kunci_kolom} ${col.opsi_pilihan ? `• Opsi: ${col.opsi_pilihan}` : ''}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button onclick="window.app.toggleKolomAktif('${col.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${col.aktif ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">
+                    ${col.aktif ? 'Aktif' : 'Nonaktif'}
+                  </button>
+                  ${!col.is_kunci_login ? `
+                    <button onclick="window.app.deleteKolom('${col.id}')" class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 transition" title="Hapus Item">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  ` : `
+                    <span class="text-[10px] text-gray-400 px-1.5" title="Digunakan untuk login peserta">🔒</span>
+                  `}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 7: ADMIN MANAJEMEN KEGIATAN, TEMA, JADWAL & BATAS PENDAFTARAN
+  // ============================================================================
+  function renderAdminKegiatanView() {
+    const keg = getActiveKegiatan() || {};
+
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- FORM EDIT KEGIATAN AKTIF / TAMBAH KEGIATAN BARU -->
+        <form onsubmit="window.app.saveKegiatan(event)" class="lg:col-span-7 bento-card p-6 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm font-bold text-gray-900">Pengaturan Kegiatan, Tema & Batas Akhir Pendaftaran</h3>
+              <p class="text-xs text-gray-500">Data ini langsung tampil pada Header Formulir Biodata dan Banner Utama</p>
+            </div>
+            <button type="button" onclick="window.app.createNewKegiatanBlank()" class="px-3 py-1.5 rounded-lg bg-violet-100 text-violet-700 text-xs font-bold">
+              + Kegiatan Baru
+            </button>
+          </div>
+
+          <input type="hidden" id="keg-id" value="${keg.id || ''}" />
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Kegiatan (Tampil di Cetakan Baris 9)</label>
+              <input type="text" id="keg-nama" required value="${keg.nama_kegiatan || ''}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Tema Kegiatan Bimtek / Seminar</label>
+              <textarea id="keg-tema" rows="2" required class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-medium">${keg.tema_kegiatan || ''}</textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Waktu Pelaksanaan (Baris 10)</label>
+                <input type="text" id="keg-waktu" required value="${keg.waktu_pelaksanaan || ''}" placeholder="SENIN - RABU, 9 - 11 NOVEMBER 2026" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-medium" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Tempat Pelaksanaan (Baris 11)</label>
+                <input type="text" id="keg-tempat" required value="${keg.tempat_pelaksanaan || ''}" placeholder="RUANG KASIROMU KANTOR BUPATI DONGGALA" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-medium" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-rose-50/50 border border-rose-200/70">
+              <div>
+                <label class="block text-xs font-bold text-rose-800 mb-1">Batas Akhir Pendaftaran (Deadline)</label>
+                <input type="datetime-local" id="keg-batas" required value="${(keg.batas_pendaftaran || '').substring(0, 16)}" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-white text-xs font-semibold" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Titi Mangsa Tanda Tangan (Baris 33)</label>
+                <input type="text" id="keg-titimangsa" required value="${keg.titimangsa_ttd || 'Donggala, 9 November 2026'}" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-medium" />
+              </div>
+            </div>
+
+            <!-- Kotak Atribut Kanan Atas Formulir (Kode Pos, Revisi, Tgl Terbit, Halaman) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Kode Pos</label>
+                <input type="text" id="keg-kodepos" value="${keg.kode_pos_dokumen || ''}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Revisi</label>
+                <input type="text" id="keg-revisi" value="${keg.revisi || ''}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Tgl Terbit</label>
+                <input type="text" id="keg-terbit" value="${keg.tgl_terbit || ''}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Halaman</label>
+                <input type="text" id="keg-halaman" value="${keg.halaman || ''}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs" />
+              </div>
+            </div>
+
+            <label class="flex items-center gap-2 text-xs font-bold text-gray-800 pt-2">
+              <input type="checkbox" id="keg-aktif" ${keg.status_aktif !== false ? 'checked' : ''} class="w-4 h-4 accent-[#6D4AFF] rounded" />
+              <span>Buka Pendaftaran untuk Kegiatan Ini</span>
+            </label>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow">
+            Simpan Perubahan Kegiatan & Batas Pendaftaran
+          </button>
+        </form>
+
+        <!-- KANAN (5 KOLOM): MANAJEMEN JADWAL / RUNDOWN MATERI BIMTEK -->
+        <div class="lg:col-span-5 bento-card p-6 space-y-4">
+          <div>
+            <h3 class="text-sm font-bold text-gray-900">Jadwal Materi & Sesi Kegiatan</h3>
+            <p class="text-xs text-gray-500">Tambahkan sesi jadwal untuk kegiatan aktif ini</p>
+          </div>
+
+          <form onsubmit="window.app.addJadwalItem(event)" class="space-y-2.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <input type="text" id="jad-waktu" required placeholder="Hari / Jam (Misal: Hari 1 • 08.00 - 10.00 WITA)" class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs" />
+            <input type="text" id="jad-materi" required placeholder="Judul Materi / Acara Kegiatan" class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs" />
+            <input type="text" id="jad-narasumber" required placeholder="Narasumber / Penanggung Jawab" class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-xs" />
+            <button type="submit" class="w-full py-2 rounded-lg bg-[#1B1446] text-white text-xs font-bold">
+              + Tambah Sesi Jadwal
+            </button>
+          </form>
+
+          <div class="space-y-2.5 max-h-80 overflow-y-auto">
+            ${(keg.jadwal_kegiatan || []).map((j, idx) => `
+              <div class="p-3 rounded-xl border border-slate-200 flex items-start justify-between gap-2 bg-white">
+                <div class="min-w-0">
+                  <p class="text-[10px] font-bold text-violet-600">${j.waktu}</p>
+                  <p class="text-xs font-bold text-gray-900">${j.materi}</p>
+                  <p class="text-[11px] text-gray-500">${j.narasumber}</p>
+                </div>
+                <button onclick="window.app.removeJadwalItem(${idx})" class="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 shrink-0">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 8: ADMIN DATA PESERTA, CETAK MASSAL & EXPORT EXCEL
+  // ============================================================================
+  function renderAdminPesertaView() {
+    const keg = getActiveKegiatan();
+    let list = keg ? state.pesertaList.filter(p => p.kegiatan_id === keg.id) : state.pesertaList;
+
+    if (state.searchQuery.trim() !== '') {
+      const q = state.searchQuery.toLowerCase();
+      list = list.filter(p =>
+        (p.nama || '').toLowerCase().includes(q) ||
+        (p.nip || '').toLowerCase().includes(q) ||
+        (p.nik || '').toLowerCase().includes(q) ||
+        (p.biodata_json?.instansi_sekolah || '').toLowerCase().includes(q) ||
+        (p.biodata_json?.kecamatan || '').toLowerCase().includes(q)
+      );
+    }
+
+    return `
+      <div class="bento-card p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-bold text-gray-900">Data Peserta Terdaftar (${list.length} Orang)</h3>
+            <p class="text-xs text-gray-500">Klik <strong>Cetak Biodata</strong> untuk mencetak lembar individu atau <strong>Cetak Massal Semua</strong> untuk seluruh peserta sekaligus.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="window.app.exportExcelPeserta()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Export Rekap Excel</span>
+            </button>
+            <button onclick="window.app.printAllPesertaInActiveKegiatan()" class="px-4 py-2 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              <span>Cetak Massal Semua Biodata (${list.length})</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-200 text-[11px] font-bold uppercase text-gray-400">
+                <th class="py-3 px-3">No</th>
+                <th class="py-3 px-3">Nama & NIP</th>
+                <th class="py-3 px-3">Instansi / Sekolah</th>
+                <th class="py-3 px-3">Kecamatan</th>
+                <th class="py-3 px-3">No. Rek BPD & HP</th>
+                <th class="py-3 px-3">TTD Digital</th>
+                <th class="py-3 px-3 text-right">Aksi Cetak / Hapus</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-xs">
+              ${list.length === 0 ? `
+                <tr>
+                  <td colspan="7" class="py-10 text-center text-gray-400">Belum ada data peserta yang ditemukan.</td>
+                </tr>
+              ` : list.map((p, idx) => {
+                const b = p.biodata_json || {};
+                return `
+                  <tr class="hover:bg-slate-50/80 transition">
+                    <td class="py-3 px-3 font-bold text-gray-500">${idx + 1}</td>
+                    <td class="py-3 px-3">
+                      <p class="font-bold text-gray-900">${p.nama}</p>
+                      <p class="text-[11px] text-gray-500">NIP: ${p.nip || '-'} • NIK: ${p.nik}</p>
+                    </td>
+                    <td class="py-3 px-3">
+                      <p class="font-semibold text-gray-800">${b.instansi_sekolah || '-'}</p>
+                      <p class="text-[11px] text-gray-500">${b.jabatan || '-'}</p>
+                    </td>
+                    <td class="py-3 px-3 font-medium text-gray-700">${b.kecamatan || '-'}</td>
+                    <td class="py-3 px-3">
+                      <p class="font-semibold text-gray-800">BPD: ${b.no_rekening_bpd || '-'}</p>
+                      <p class="text-[11px] text-gray-500">HP: ${p.no_hp}</p>
+                    </td>
+                    <td class="py-3 px-3">
+                      ${p.ttd_base64 ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">✓ Ada TTD</span>` : `<span class="text-gray-400">-</span>`}
+                    </td>
+                    <td class="py-3 px-3 text-right space-x-1.5 whitespace-nowrap">
+                      <button onclick="window.app.previewSinglePeserta('${p.id}')" class="px-3 py-1.5 rounded-lg bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-[11px] font-bold">
+                        Cetak Biodata
+                      </button>
+                      <button onclick="window.app.deletePeserta('${p.id}')" class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============================================================================
+  // VIEW 9: ADMIN PENGATURAN KOP SURAT & NOMOR WHATSAPP PANITIA
+  // ============================================================================
+  function renderAdminPengaturanView() {
+    const g = state.pengaturan;
+    return `
+      <form onsubmit="window.app.savePengaturan(event)" class="max-w-3xl mx-auto bento-card p-6 space-y-5">
+        <div class="pb-3 border-b border-slate-100">
+          <h3 class="text-base font-bold text-gray-900">Pengaturan Kop Surat Resmi & Kontak WhatsApp Panitia</h3>
+          <p class="text-xs text-gray-500">Sesuaikan teks kop surat cetakan biodata dan nomor tujuan tombol WhatsApp Panitia.</p>
+        </div>
+
+        <div class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Baris 1 Kop Surat (Pemerintah Daerah)</label>
+            <input type="text" id="set-pemerintah" required value="${g.pemerintah}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Baris 2 Kop Surat (Nama Dinas / Instansi)</label>
+            <input type="text" id="set-dinas" required value="${g.dinas}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Baris 3 Kop Surat (Alamat & Telepon)</label>
+            <input type="text" id="set-alamat" required value="${g.alamat_dinas}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">URL Logo Kabupaten Donggala</label>
+            <input type="text" id="set-logo" required value="${g.logo_url}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs" />
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200 space-y-3">
+          <h4 class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
+            <span>Pengaturan Tombol WhatsApp Panitia</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor WhatsApp (Awali 628...)</label>
+              <input type="text" id="set-wa-no" required value="${g.no_wa_panitia}" placeholder="6281234567890" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Label Tombol WA</label>
+              <input type="text" id="set-wa-nama" required value="${g.nama_kontak_wa}" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Pesan Default Otomatis Saat Peserta Klik WA</label>
+            <textarea id="set-wa-pesan" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs">${g.pesan_default_wa}</textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl bg-[#6D4AFF] hover:bg-[#5835EE] text-white text-xs font-bold shadow">
+          Simpan Pengaturan Kop & WhatsApp Panitia
+        </button>
+      </form>
+    `;
+  }
+
+  // ============================================================================
+  // FUNGSI RENDER UTAMA
+  // ============================================================================
+  function renderApp() {
+    const previewBanner = document.getElementById('preview-banner');
+    if (IS_PREVIEW) {
+      previewBanner.classList.remove('hidden');
+    } else {
+      previewBanner.classList.add('hidden');
+    }
+
+    renderNavigations();
+    renderHeroBanner();
+
+    const container = document.getElementById('dynamic-view-container');
+    switch (state.currentView) {
+      case 'pendaftaran':
+        container.innerHTML = renderPendaftaranView();
+        initSignatureCanvas('sig-canvas');
+        break;
+      case 'jadwal':
+        container.innerHTML = renderJadwalView();
+        break;
+      case 'login':
+        container.innerHTML = renderLoginView();
+        break;
+      case 'peserta_area':
+        container.innerHTML = renderPesertaAreaView();
+        break;
+      case 'admin_dashboard':
+        container.innerHTML = state.role === 'admin' ? renderAdminDashboardView() : renderLoginView();
+        break;
+      case 'admin_kolom':
+        container.innerHTML = state.role === 'admin' ? renderAdminKolomView() : renderLoginView();
+        break;
+      case 'admin_kegiatan':
+        container.innerHTML = state.role === 'admin' ? renderAdminKegiatanView() : renderLoginView();
+        break;
+      case 'admin_peserta':
+        container.innerHTML = state.role === 'admin' ? renderAdminPesertaView() : renderLoginView();
+        break;
+      case 'admin_pengaturan':
+        container.innerHTML = state.role === 'admin' ? renderAdminPengaturanView() : renderLoginView();
+        break;
+      default:
+        container.innerHTML = renderPendaftaranView();
+        initSignatureCanvas('sig-canvas');
+    }
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }
+
+  // ============================================================================
+  // CONTROLLER ACTIONS (TERHUBUNG KE SUPABASE SAAT IS_PREVIEW = false)
+  // ============================================================================
+  window.app = {
+    navigate(view) {
+      state.currentView = view;
+      renderApp();
+    },
+
+    selectActiveKegiatan(id) {
+      state.activeKegiatanId = id;
+      renderApp();
+    },
+
+    handleGlobalSearch(val) {
+      state.searchQuery = val;
+      if (state.role === 'admin' && state.currentView !== 'admin_peserta') {
+        state.currentView = 'admin_peserta';
+      }
+      renderApp();
+    },
+
+    clearSignature(canvasId) {
+      clearSignatureCanvas(canvasId);
+    },
+
+    handlePhotoUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxW = 300;
+          const scale = Math.min(maxW / img.width, 1);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          uploadedPhotoDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          const previewBox = document.getElementById('photo-preview-box');
+          if (previewBox) {
+            previewBox.innerHTML = `<img src="${uploadedPhotoDataUrl}" class="w-full h-full object-cover" />`;
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
+    async submitPendaftaran(event) {
+      event.preventDefault();
+      const keg = getActiveKegiatan();
+      if (!keg) return showToast('Tidak ada kegiatan aktif.', 'error');
+
+      if (state.pengaturan.aktifkan_upload_foto && state.pengaturan.wajib_upload_foto && !uploadedPhotoDataUrl) {
+        return showToast('Mohon unggah pas foto peserta terlebih dahulu.', 'warning');
+      }
+
+      if (!sigPadDataUrl) {
+        return showToast('Mohon bubuhkan tanda tangan Anda pada kotak tanda tangan terlebih dahulu.', 'warning');
+      }
+
+      const formData = new FormData(event.target);
+      const biodataObj = {};
+      formData.forEach((value, key) => {
+        biodataObj[key] = value;
+      });
+
+      const newPeserta = {
+        id: crypto.randomUUID ? crypto.randomUUID() : 'pes-' + Date.now(),
+        kegiatan_id: keg.id,
+        nama: biodataObj.nama || 'Peserta Bimtek',
+        nip: biodataObj.nip || '',
+        nik: biodataObj.nik || '',
+        no_hp: biodataObj.no_hp || '',
+        biodata_json: biodataObj,
+        foto_base64: uploadedPhotoDataUrl || '',
+        ttd_base64: sigPadDataUrl,
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { data, error } = await supabase
+            .from('peserta_bimtek')
+            .insert([{
+              kegiatan_id: newPeserta.kegiatan_id,
+              nama: newPeserta.nama,
+              nip: newPeserta.nip,
+              nik: newPeserta.nik,
+              no_hp: newPeserta.no_hp,
+              biodata_json: newPeserta.biodata_json,
+              foto_base64: newPeserta.foto_base64,
+              ttd_base64: newPeserta.ttd_base64
+            }])
+            .select()
+            .single();
+          if (error) throw error;
+          state.pesertaList.unshift(data);
+          state.currentUser = data;
+        } else {
+          state.pesertaList.unshift(newPeserta);
+          state.currentUser = newPeserta;
+        }
+
+        uploadedPhotoDataUrl = '';
+        sigPadDataUrl = '';
+        state.role = 'peserta';
+        state.currentView = 'peserta_area';
+        showToast('Pendaftaran berhasil disimpan! Formulir Biodata siap dicetak.');
+        renderApp();
+      } catch (err) {
+        showToast('Gagal menyimpan pendaftaran: ' + err.message, 'error');
+      }
+    },
+
+    async handleLoginPeserta(event) {
+      event.preventDefault();
+      const idVal = document.getElementById('login-peserta-id').value.trim();
+      const hpVal = document.getElementById('login-peserta-hp').value.trim();
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { data, error } = await supabase
+            .from('peserta_bimtek')
+            .select('*')
+            .or(`nik.eq.${idVal},nip.eq.${idVal}`)
+            .eq('no_hp', hpVal)
+            .maybeSingle();
+
+          if (error) throw error;
+          if (!data) {
+            return showToast('Data peserta tidak ditemukan. Pastikan NIK/NIP dan Nomor HP sesuai saat mendaftar.', 'error');
+          }
+          state.currentUser = data;
+        } else {
+          const found = state.pesertaList.find(p =>
+            (p.nik === idVal || p.nip === idVal) && p.no_hp === hpVal
+          );
+          if (!found) {
+            return showToast('Data peserta tidak ditemukan. Pastikan NIK/NIP dan Nomor HP sesuai.', 'error');
+          }
+          state.currentUser = found;
+        }
+
+        state.role = 'peserta';
+        state.currentView = 'peserta_area';
+        showToast('Berhasil masuk sebagai ' + state.currentUser.nama);
+        renderApp();
+      } catch (err) {
+        showToast('Gagal validasi login peserta: ' + err.message, 'error');
+      }
+    },
+
+    async handleLoginAdmin(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-admin-email').value.trim();
+      const password = document.getElementById('login-admin-password').value;
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          state.role = 'admin';
+          state.currentUser = { email: data.user.email, name: 'Admin Panitia Disdikpora' };
+        } else {
+          state.role = 'admin';
+          state.currentUser = { email, name: 'Admin Panitia (Mode Preview)' };
+        }
+        state.currentView = 'admin_dashboard';
+        showToast('Selamat datang di Dashboard Admin Panitia Disdikpora.');
+        renderApp();
+      } catch (err) {
+        showToast('Login Admin gagal: ' + err.message, 'error');
+      }
+    },
+
+    quickLoginAdmin() {
+      if (!IS_PREVIEW) return;
+      state.role = 'admin';
+      state.currentUser = { email: 'admin@disdikpora.donggalakab.go.id', name: 'Admin Panitia Disdikpora' };
+      state.currentView = 'admin_dashboard';
+      showToast('Mode Preview: Masuk cepat sebagai Admin Panitia.');
+      renderApp();
+    },
+
+    quickLoginPeserta() {
+      if (!IS_PREVIEW) return;
+      if (state.pesertaList.length > 0) {
+        state.role = 'peserta';
+        state.currentUser = state.pesertaList[0];
+        state.currentView = 'peserta_area';
+        showToast('Mode Preview: Masuk cepat sebagai Peserta Contoh.');
+        renderApp();
+      }
+    },
+
+    async logoutAll() {
+      if (!IS_PREVIEW && supabase && state.role === 'admin') {
+        await supabase.auth.signOut();
+      }
+      state.role = 'public';
+      state.currentUser = null;
+      state.currentView = 'pendaftaran';
+      showToast('Anda telah keluar.');
+      renderApp();
+    },
+
+    openWhatsAppPanitia() {
+      const no = (state.pengaturan.no_wa_panitia || '').replace(/[^0-9]/g, '');
+      const msg = encodeURIComponent(state.pengaturan.pesan_default_wa || 'Halo Panitia Bimtek Disdikpora Kab. Donggala');
+      window.open(`https://wa.me/${no}?text=${msg}`, '_blank');
+    },
+
+    // ---- MANAJEMEN KOLOM & SAKLAR FOTO ----
+    async toggleUploadFoto(checked) {
+      state.pengaturan.aktifkan_upload_foto = checked;
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('pengaturan_aplikasi').update({ aktifkan_upload_foto: checked }).eq('id', 1);
+      }
+      showToast(`Menu Upload Foto Peserta ${checked ? 'Diaktifkan' : 'Dinonaktifkan'}`);
+      renderApp();
+    },
+
+    async toggleWajibFoto(checked) {
+      state.pengaturan.wajib_upload_foto = checked;
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('pengaturan_aplikasi').update({ wajib_upload_foto: checked }).eq('id', 1);
+      }
+      showToast('Status wajib upload foto diperbarui.');
+    },
+
+    async handleAddKolom(event) {
+      event.preventDefault();
+      const label = document.getElementById('new-col-label').value.trim();
+      const tipe = document.getElementById('new-col-type').value;
+      const urutan = parseInt(document.getElementById('new-col-order').value, 10) || (state.kolomList.length + 1);
+      const opsi = document.getElementById('new-col-options').value.trim();
+      const wajib = document.getElementById('new-col-req').checked;
+      const key = 'kolom_' + label.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now().toString().slice(-3);
+
+      const newCol = {
+        id: crypto.randomUUID ? crypto.randomUUID() : 'col-' + Date.now(),
+        kunci_kolom: key,
+        label_kolom: label,
+        tipe_input: tipe,
+        opsi_pilihan: opsi,
+        urutan,
+        wajib_diisi: wajib,
+        aktif: true,
+        is_kunci_login: false
+      };
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { data, error } = await supabase.from('konfigurasi_kolom').insert([newCol]).select().single();
+          if (error) throw error;
+          state.kolomList.push(data);
+        } else {
+          state.kolomList.push(newCol);
+        }
+        showToast(`Kolom "${label}" berhasil ditambahkan!`);
+        renderApp();
+      } catch (err) {
+        showToast('Gagal menambah kolom: ' + err.message, 'error');
+      }
+    },
+
+    async toggleKolomAktif(colId) {
+      const col = state.kolomList.find(c => c.id === colId);
+      if (!col) return;
+      col.aktif = !col.aktif;
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('konfigurasi_kolom').update({ aktif: col.aktif }).eq('id', colId);
+      }
+      renderApp();
+    },
+
+    async deleteKolom(colId) {
+      const col = state.kolomList.find(c => c.id === colId);
+      if (!col || col.is_kunci_login) return;
+      state.kolomList = state.kolomList.filter(c => c.id !== colId);
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('konfigurasi_kolom').delete().eq('id', colId);
+      }
+      showToast(`Item kolom "${col.label_kolom}" dihapus.`);
+      renderApp();
+    },
+
+    async resetDefaultColumns() {
+      state.kolomList = JSON.parse(JSON.stringify(DEFAULT_20_COLUMNS));
+      showToast('Daftar kolom dikembalikan ke 20 item standar formulir Disdikpora.');
+      renderApp();
+    },
+
+    // ---- MANAJEMEN KEGIATAN, TEMA, JADWAL & DEADLINE ----
+    createNewKegiatanBlank() {
+      const newKeg = {
+        id: crypto.randomUUID ? crypto.randomUUID() : 'keg-' + Date.now(),
+        nama_kegiatan: 'BIMTEK / SEMINAR BARU DISDIKPORA KAB. DONGGALA',
+        tema_kegiatan: 'Tema Kegiatan Bimtek...',
+        waktu_pelaksanaan: 'SENIN - RABU, 16 - 18 NOVEMBER 2026',
+        tempat_pelaksanaan: 'RUANG KASIROMU KANTOR BUPATI DONGGALA',
+        batas_pendaftaran: '2026-11-15T23:59',
+        titimangsa_ttd: 'Donggala, 16 November 2026',
+        kode_pos_dokumen: '94351',
+        revisi: '00',
+        tgl_terbit: '16-11-2026',
+        halaman: '1 dari 1',
+        status_aktif: true,
+        jadwal_kegiatan: []
+      };
+      state.kegiatanList.unshift(newKeg);
+      state.activeKegiatanId = newKeg.id;
+      showToast('Draf kegiatan baru dibuat. Silakan sesuaikan detailnya.');
+      renderApp();
+    },
+
+    async saveKegiatan(event) {
+      event.preventDefault();
+      let keg = getActiveKegiatan();
+      const payload = {
+        nama_kegiatan: document.getElementById('keg-nama').value.trim(),
+        tema_kegiatan: document.getElementById('keg-tema').value.trim(),
+        waktu_pelaksanaan: document.getElementById('keg-waktu').value.trim(),
+        tempat_pelaksanaan: document.getElementById('keg-tempat').value.trim(),
+        batas_pendaftaran: document.getElementById('keg-batas').value,
+        titimangsa_ttd: document.getElementById('keg-titimangsa').value.trim(),
+        kode_pos_dokumen: document.getElementById('keg-kodepos').value.trim(),
+        revisi: document.getElementById('keg-revisi').value.trim(),
+        tgl_terbit: document.getElementById('keg-terbit').value.trim(),
+        halaman: document.getElementById('keg-halaman').value.trim(),
+        status_aktif: document.getElementById('keg-aktif').checked,
+        jadwal_kegiatan: keg?.jadwal_kegiatan || []
+      };
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          if (keg && keg.id && !keg.id.startsWith('keg-')) {
+            const { error } = await supabase.from('kegiatan_bimtek').update(payload).eq('id', keg.id);
+            if (error) throw error;
+            Object.assign(keg, payload);
+          } else {
+            const { data, error } = await supabase.from('kegiatan_bimtek').insert([payload]).select().single();
+            if (error) throw error;
+            state.kegiatanList = state.kegiatanList.filter(k => k.id !== keg?.id);
+            state.kegiatanList.unshift(data);
+            state.activeKegiatanId = data.id;
+          }
+        } else {
+          if (keg) Object.assign(keg, payload);
+        }
+        showToast('Data kegiatan, tema, dan batas waktu pendaftaran berhasil disimpan!');
+        renderApp();
+      } catch (err) {
+        showToast('Gagal menyimpan kegiatan: ' + err.message, 'error');
+      }
+    },
+
+    async addJadwalItem(event) {
+      event.preventDefault();
+      const keg = getActiveKegiatan();
+      if (!keg) return;
+      const item = {
+        waktu: document.getElementById('jad-waktu').value.trim(),
+        materi: document.getElementById('jad-materi').value.trim(),
+        narasumber: document.getElementById('jad-narasumber').value.trim()
+      };
+      keg.jadwal_kegiatan = keg.jadwal_kegiatan || [];
+      keg.jadwal_kegiatan.push(item);
+
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('kegiatan_bimtek').update({ jadwal_kegiatan: keg.jadwal_kegiatan }).eq('id', keg.id);
+      }
+      showToast('Sesi jadwal berhasil ditambahkan.');
+      renderApp();
+    },
+
+    async removeJadwalItem(idx) {
+      const keg = getActiveKegiatan();
+      if (!keg || !keg.jadwal_kegiatan) return;
+      keg.jadwal_kegiatan.splice(idx, 1);
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('kegiatan_bimtek').update({ jadwal_kegiatan: keg.jadwal_kegiatan }).eq('id', keg.id);
+      }
+      renderApp();
+    },
+
+    // ---- MANAJEMEN PENGATURAN KOP & WA ----
+    async savePengaturan(event) {
+      event.preventDefault();
+      const updated = {
+        pemerintah: document.getElementById('set-pemerintah').value.trim(),
+        dinas: document.getElementById('set-dinas').value.trim(),
+        alamat_dinas: document.getElementById('set-alamat').value.trim(),
+        logo_url: document.getElementById('set-logo').value.trim(),
+        no_wa_panitia: document.getElementById('set-wa-no').value.trim(),
+        nama_kontak_wa: document.getElementById('set-wa-nama').value.trim(),
+        pesan_default_wa: document.getElementById('set-wa-pesan').value.trim()
+      };
+      Object.assign(state.pengaturan, updated);
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('pengaturan_aplikasi').upsert({ id: 1, ...state.pengaturan });
+      }
+      showToast('Pengaturan Kop Surat & Nomor WhatsApp Panitia disimpan!');
+      renderApp();
+    },
+
+    // ---- CETAK FORMULIR BIODATA (SATUAN & MASSAL) + EXPORT EXCEL ----
+    previewSinglePeserta(pesertaId) {
+      const p = state.pesertaList.find(x => x.id === pesertaId);
+      if (!p) return;
+      state.currentPreviewList = [p];
+      this.openPreviewModal();
+    },
+
+    printAllPesertaInActiveKegiatan() {
+      const keg = getActiveKegiatan();
+      const list = keg ? state.pesertaList.filter(p => p.kegiatan_id === keg.id) : state.pesertaList;
+      if (list.length === 0) return showToast('Belum ada peserta untuk dicetak.', 'warning');
+      state.currentPreviewList = list;
+      this.openPreviewModal();
+    },
+
+    openPreviewModal() {
+      const modal = document.getElementById('modal-biodata-preview');
+      const body = document.getElementById('modal-biodata-body');
+      const keg = getActiveKegiatan();
+      const activeCols = [...state.kolomList].filter(c => c.aktif).sort((a, b) => a.urutan - b.urutan);
+
+      const sheetsHTML = state.currentPreviewList.map(p => {
+        const pKeg = state.kegiatanList.find(k => k.id === p.kegiatan_id) || keg;
+        return `<div class="mb-6 shadow-xl border border-slate-300 bg-white">${buildBiodataSheetHTML(p, pKeg, state.pengaturan, activeCols)}</div>`;
+      }).join('');
+
+      body.innerHTML = `<div class="space-y-6">${sheetsHTML}</div>`;
+      modal.classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    },
+
+    closePreviewModal() {
+      document.getElementById('modal-biodata-preview').classList.add('hidden');
+    },
+
+    triggerPrintCurrentPreview() {
+      const printArea = document.getElementById('print-area');
+      const keg = getActiveKegiatan();
+      const activeCols = [...state.kolomList].filter(c => c.aktif).sort((a, b) => a.urutan - b.urutan);
+
+      printArea.innerHTML = state.currentPreviewList.map(p => {
+        const pKeg = state.kegiatanList.find(k => k.id === p.kegiatan_id) || keg;
+        return buildBiodataSheetHTML(p, pKeg, state.pengaturan, activeCols);
+      }).join('');
+
+      window.print();
+    },
+
+    async deletePeserta(id) {
+      state.pesertaList = state.pesertaList.filter(p => p.id !== id);
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('peserta_bimtek').delete().eq('id', id);
+      }
+      showToast('Data peserta berhasil dihapus.');
+      renderApp();
+    },
+
+    exportExcelPeserta() {
+      const keg = getActiveKegiatan();
+      const list = keg ? state.pesertaList.filter(p => p.kegiatan_id === keg.id) : state.pesertaList;
+      if (list.length === 0) return showToast('Belum ada data peserta untuk diekspor.', 'warning');
+
+      const activeCols = [...state.kolomList].filter(c => c.aktif).sort((a, b) => a.urutan - b.urutan);
+      let tableHTML = `
+        <table border="1">
+          <thead>
+            <tr>
+              <th colspan="${activeCols.length + 1}" style="font-size:14pt; font-weight:bold;">REKAP BIODATA PESERTA - ${keg?.nama_kegiatan || 'BIMTEK DISDIKPORA KAB. DONGGALA'}</th>
+            </tr>
+            <tr style="background:#1B1446; color:#ffffff; font-weight:bold;">
+              <th>No</th>
+              ${activeCols.map(c => `<th>${c.label_kolom}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${list.map((p, idx) => {
+              const b = p.biodata_json || {};
+              return `
+                <tr>
+                  <td>${idx + 1}</td>
+                  ${activeCols.map(c => `<td>${b[c.kunci_kolom] || p[c.kunci_kolom] || ''}</td>`).join('')}
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+
+      const blob = new Blob(['\ufeff', tableHTML], { type: 'application/vnd.ms-excel' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `REKAP_BIODATA_PESERTA_${new Date().toISOString().slice(0, 10)}.xls`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('File Rekap Excel (.xls) berhasil diunduh!');
+    }
+  };
+
+  // ============================================================================
+  // REGISTRASI DYNAMIC SERVICE WORKER (PWA 1 FILE)
+  // ============================================================================
+  function registerSingleFilePWA() {
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('install', (e) => self.skipWaiting());
+        self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+        self.addEventListener('fetch', (e) => {});
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(() => {});
+    }
+  }
+
+  // ============================================================================
+  // BOOTSTRAP APLIKASI
+  // ============================================================================
+  async function bootstrap() {
+    registerSingleFilePWA();
+    if (IS_PREVIEW) {
+      initPreviewDummyData();
+    } else {
+      await loadAllDataFromSupabase();
+    }
+    renderApp();
+  }
+
+  bootstrap();
+</script>
+</body>
+</html>
